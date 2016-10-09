@@ -1,7 +1,100 @@
 Parseit
 =======
 
-`Parseit` es una herramienta de linea de comandos para "interpretar" archivos de texto con formato. Algunos puntos claves de este proyecto:
+`Parseit` es una herramienta de linea de comandos para "interpretar" archivos de texto con formato. 
+
+Para entender que es `parseit` nada mejor que un ejemplo práctico. Para el intercambio de información con el Afip, se 
+suele trabajar con este tipo de archivos, en particular los contribuyentes grandes, que suelen generar gran cantidad
+de información, veamos un caso típico, el Sistema federal de información más conocido domo **SIFERE** permite
+importar masivamente la información de retenciones y percepciones, la información se arma en archivos de texto, 
+con campos de lóngitud fija y caracteres de fin de linea:
+
+```
+90130-00000000-901/01/200612341234567891234560FA0000000000010000123500000125,20
+90130-00000000-901/01/200612341234567891234560FA0000000000010000123500000125,20
+90130-00000000-901/01/200612341234567891234560FA0000000000010000123500000125,20
+```
+
+Para poder interpretar este archivo, se "define" el formato en una archivo JSON, por ejemplo asi:
+
+```
+		"sifere-retenciones": {
+			"category": "Afip.Sifere",
+			"delimiter": "",
+			"fields": {
+				"Código de Jurisdicción" : 													[ 3, "table", "sifere-jurisdicciones", ""],
+				"CUIT del Agente de Retención" : 											[13, "string", "", ""],
+				"Fecha de la Retención" : 													[10, "date", "%d/%m/%Y", "%d-%m-%Y"],
+				"Número de Sucursal" :	 													[ 4, "string", "", ""],
+				"Número de constancia" :													[16, "string", "", ""],
+				"Tipo de Comprobante" :														[ 1, "table", "sifere-tipo-comprobantes", ""],
+				"Letra del Comprobante" :													[ 1, "string", "", ""],
+				"Número de Comprobante Original" :											[20, "string", "", ""],
+				"Importe Retenido" :														[11, "amount", "", ""]
+			}
+		},
+
+```
+Notese que además de definir la longitud de cada campo, definimos el formato y particularmente definimos
+que algunos campos son "tablas", dónde el dato en sí hace referencia a una tabla de valores definida también 
+para que de esta forma podamos visualizar completamente la información:
+
+```
+	"sifere-jurisdicciones": {
+		"901": "Capital Federal",
+		"902": "Buenos Aires",
+		"903": "Catamarca",
+		"904": "Córdoba",
+		"905": "Corrientes",
+		"906": "Chaco",
+		"907": "Chubut",
+		"908": "Entre Ríos",
+		"909": "Formosa",
+		"910": "Jujuy",
+		"911": "La Pampa",
+		"912": "La Rioja",
+		"913": "Mendoza",
+		"914": "Misiones",
+		"915": "Neuquén",
+		"916": "Río Negro",
+		"917": "Salta",
+		"918": "San Juan",
+		"919": "San Luis",
+		"920": "Santa Cruz",
+		"921": "Santa Fe",
+		"922": "Santiago del Estero",
+		"923": "Tierra del Fuego",
+		"924": "Tucumán"
+	},
+	"sifere-tipo-comprobantes": {
+		"F": "Factura",
+		"R": "Recibo", 
+		"D": "Nota de Débito",
+		"C": "Nota de Crédito",
+		"O": "Otro"
+	},
+```
+
+De esta forma tenemos:
+* Un archivo de texto con información en campos de lóngitud fija, por ejemplo: `sifere.dat`
+* Una definción JSON del formato, en un archivo de nombre `parseit.fmt`
+* La herramienta `parseit` o `parseit.exe`
+
+Con esta configuración al invocar `parseit sifere.dat` obtendremos una salida como está:
+
+```
++----------+--------------------------+--------------------------------+-------------------------+----------------------+------------------------+-----------------------+-------------------------+----------------------------------+--------------------+
+|   # Reg. | Código de Jurisdicción   | CUIT del Agente de Retención   | Fecha de la Retención   |   Número de Sucursal |   Número de constancia | Tipo de Comprobante   | Letra del Comprobante   |   Número de Comprobante Original |   Importe Retenido |
+|----------+--------------------------+--------------------------------+-------------------------+----------------------+------------------------+-----------------------+-------------------------+----------------------------------+--------------------|
+|        1 | 901 - Capital Federal    | 30-00000000-9                  | 01-01-2006              |                 1234 |       1234567891234560 | F - Factura           | A                       |             00000000000100001235 |             125.20 |
+|        2 | 901 - Capital Federal    | 30-00000000-9                  | 01-01-2006              |                 1234 |       1234567891234560 | F - Factura           | A                       |             00000000000100001235 |             125.20 |
+|        3 | 901 - Capital Federal    | 30-00000000-9                  | 01-01-2006              |                 1234 |       1234567891234560 | F - Factura           | A                       |             00000000000100001235 |             125.20 |
++----------+--------------------------+--------------------------------+-------------------------+----------------------+------------------------+-----------------------+-------------------------+----------------------------------+--------------------+
+
+```
+
+
+Algunos puntos claves de este proyecto:
 
 * Herramienta de línea de comandos
 * Interpretación de archivos de texto de formato especifico, con caracter de fin de línea. Más adelante veremos como manejar otros formatos.
@@ -36,7 +129,6 @@ En Windows, nada en particular ya que se distribuye la herramienta "congelada" m
 ### Uso:
 
 ```
-#!bash
 
 uso: parseit [-h] [-v] [-f "path o archivo"] [-u "formato"] [-t] [-s] [-i]
              [-o "archivo"] [-x] [-e "formato"] [-c "columnas"] [-r "filas"]
