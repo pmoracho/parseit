@@ -123,7 +123,7 @@ Algunos puntos claves de este proyecto:
 En Windows, nada en particular ya que se distribuye la herramienta "congelada" mediante **Pyinstaller**. Descargarla y copiarla en alguna carpeta del sistema, idealmente que este apuntada al path.
 
 * Para descargar y descomprimir **Parseit**, hacer click [aqui](https://bitbucket.org/pmoracho/python.projects/raw/bd19d803a17e2fe6720fc603117a75d2cd1c6b76/parse/dist/parseit-20160606.zip)
-* El proyecto en [**Bibucket**](https://bitbucket.org/pmoracho/python.projects/src/0805fe4eed49/parse/?at=master)
+* El proyecto en [**Github**](https://github.com/pmoracho/parseit)
 
 
 ### Uso:
