@@ -1,0 +1,33 @@
+table.tabulate {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size:10px;
+	color:#000000;
+	border-width: 1px;
+	border-color: #eeeeee;
+	border-collapse: collapse;
+	background-color: #ffffff;
+	width: 100%;
+	table-layout: auto;
+}
+table.tabulate th {
+	border-width: 4px;
+	padding: 1px;
+	border-style: solid;
+	border-color: #D2E4FC;
+	background-color: #004f6f;
+	color:#fff;
+	text-align: left;
+}
+table.tabulate td {
+	border-width   : 4px;
+	padding		   : 1px;
+	border-style   : solid;
+	border-color   : #D2E4FC;
+	vertical-align : top;
+}
+table.tabulate tr:nth-of-type(even) {
+	background-color:#D2E4FC;
+}
+table.tabulate tr:nth-of-type(odd) {
+	background-color:#F7FDFA;
+}
