@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
 # Copyright (c) 2014 Patricio Moracho <pmoracho@gmail.com>
 #
 # parseit
@@ -18,7 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-"""
 
 __author__		= "Patricio Moracho <pmoracho@gmail.com>"
 __appname__		= "parseit"
@@ -46,11 +44,13 @@ try:
 
 	def my_gettext(s):
 		"""my_gettext: Traducir algunas cadenas de argparse."""
-		current_dict = {'usage: ': 'uso: ',
-						'optional arguments': 'argumentos opcionales',
-						'show this help message and exit': 'mostrar esta ayuda y salir',
-						'positional arguments': 'argumentos posicionales',
-						'the following arguments are required: %s': 'los siguientes argumentos son requeridos: %s'}
+		current_dict = {
+			'usage: ': 'uso: ',
+			'optional arguments': 'argumentos opcionales',
+			'show this help message and exit': 'mostrar esta ayuda y salir',
+			'positional arguments': 'argumentos posicionales',
+			'the following arguments are required: %s': 'los siguientes argumentos son requeridos: %s'
+		}
 
 		if s in current_dict:
 			return current_dict[s]
@@ -59,7 +59,6 @@ try:
 	gettext.gettext = my_gettext
 
 	import argparse
-	from argparse import RawTextHelpFormatter
 
 except ImportError as err:
 	modulename = err.args[0].split()[3]
@@ -68,48 +67,49 @@ except ImportError as err:
 
 
 ##################################################################################################################################################
-## Inicializar parametros del programa
+# Inicializar parametros del programa
 ##################################################################################################################################################
 def init_argparse():
 
-	usage			= 	'\nEjemplos de uso:\n\n' \
-						'- Interpretar un archivo infiriendo el formato:\n' \
-						'  %(prog)s [opciones] <archivo a interpretar>\n\n' \
-						'- Mostrar todos los formatos disponibles y sus definiciones:\n' \
-						'  %(prog)s [opciones] -s [opciones]\n\n' \
-						'- Mostrar esta ayuda:\n' \
-						'  %(prog)s -h\n\n' 
+	usage = '\nEjemplos de uso:\n\n' \
+			'- Interpretar un archivo infiriendo el formato:\n' \
+			'  %(prog)s [opciones] <archivo a interpretar>\n\n' \
+			'- Mostrar todos los formatos disponibles y sus definiciones:\n' \
+			'  %(prog)s [opciones] -s [opciones]\n\n' \
+			'- Mostrar esta ayuda:\n' \
+			'  %(prog)s -h\n\n'
 
+	cmdparser = argparse.ArgumentParser(
+							prog=__appname__,
+							description="%s\n%s\n" % (__appdesc__, __copyright__),
+							epilog=usage,
+							formatter_class=lambda prog: argparse.RawTextHelpFormatter(prog, max_help_position=35),
+							usage=None
+	)
 
-	cmdparser = argparse.ArgumentParser(prog			= __appname__, 
-										description		= "%s\n%s\n" % (__appdesc__,__copyright__ ), 
-										epilog			= usage,
-										formatter_class = lambda prog: argparse.RawTextHelpFormatter(prog,max_help_position=35), 
-										usage			= None
-										)
+	cmdparser.add_argument('inputfile'			, type=str, nargs='?', help="Archivo de input", metavar="\"archivo a interpretar\"")
 
-	cmdparser.add_argument('inputfile'			, type=str, nargs='?', help="Archivo de input", metavar="\"archivo a interpretar\"")	
-
-	cmdparser.add_argument("-v", "--version"	    		, action='version', version=__version__)							
-	cmdparser.add_argument('-f', '--format'		, type=str	, action="store", dest="formato", help="Definir path o archivo FMT a utilizar", metavar="\"path o archivo\"")	
-	cmdparser.add_argument('-u', '--useformat'	, type=str	, action="store", dest="useformat", help="Forzar el uso de un determinado formato para porcesar el archivo", metavar="\"formato\"")	
-	cmdparser.add_argument('-t', '--dontusetables'			, action="store_true", dest="dontusetables", help="No usar traducción por tablas y mostrar los datos nativos")	
-	cmdparser.add_argument('-s', '--showformat'		    	, action="store_true", dest="showformat", help="Mostrar información de un formato (--format) en particular o todos los definidos")	
-	cmdparser.add_argument('-i', '--ignorefmterror'			, action="store_true", dest="ignorefmterror", help="Ignorar errores al cargar archivos de formatos")	
-	cmdparser.add_argument('-o', '--outputfile'			    , action="store", dest="outputfile", help="Exportar a un archivo", metavar="\"archivo\"")	
-	cmdparser.add_argument('-x', '--openfile'			    , action="store_true", dest="openfile", help="abrir automáticamente el archivo")	
-	cmdparser.add_argument('-e', '--exportformat'			, action="store", dest="exportformat", help="Exportar en un formato específico", metavar="\"formato\"", default="psql")	
-	cmdparser.add_argument('-c', '--showcols', type=str		, action="store", dest="showcols", help=u"Números de las columnas a mostrar", metavar="\"columnas\"")	
-	cmdparser.add_argument('-r', '--showrows', type=str		, action="store", dest="showrows", help=u"Números de las filas a mostrar", metavar="\"filas\"")	
-	cmdparser.add_argument('-n', '--dontshowrecordnumber'	, action="store_false", dest="addrecordnumber", help="No mostrar los números de cada registro")	
-	cmdparser.add_argument('-z', '--horizontalmode'			, action="store_true", dest="horizontalmode", help="Modo de visualización horizontal")	
-	cmdparser.add_argument('-a', '--addtotals'			    , action="store_true", dest="addtotals", help="Agregar una última fila con los totales de los campos númericos")	
+	cmdparser.add_argument("-v", "--version"	    		, action='version', version=__version__)
+	cmdparser.add_argument('-f', '--format'		, type=str	, action="store", dest="formato", help="Definir path o archivo FMT a utilizar", metavar="\"path o archivo\"")
+	cmdparser.add_argument('-u', '--useformat'	, type=str	, action="store", dest="useformat", help="Forzar el uso de un determinado formato para porcesar el archivo", metavar="\"formato\"")
+	cmdparser.add_argument('-t', '--dontusetables'			, action="store_true", dest="dontusetables", help="No usar traducción por tablas y mostrar los datos nativos")
+	cmdparser.add_argument('-s', '--showformat'		    	, action="store_true", dest="showformat", help="Mostrar información de un formato (--format) en particular o todos los definidos")
+	cmdparser.add_argument('-i', '--ignorefmterror'			, action="store_true", dest="ignorefmterror", help="Ignorar errores al cargar archivos de formatos")
+	cmdparser.add_argument('-o', '--outputfile'			    , action="store", dest="outputfile", help="Exportar a un archivo", metavar="\"archivo\"")
+	cmdparser.add_argument('-x', '--openfile'			    , action="store_true", dest="openfile", help="abrir automáticamente el archivo")
+	cmdparser.add_argument('-e', '--exportformat'			, action="store", dest="exportformat", help="Exportar en un formato específico", metavar="\"formato\"", default="psql")
+	cmdparser.add_argument('-c', '--showcols', type=str		, action="store", dest="showcols", help=u"Números de las columnas a mostrar", metavar="\"columnas\"")
+	cmdparser.add_argument('-r', '--showrows', type=str		, action="store", dest="showrows", help=u"Números de las filas a mostrar", metavar="\"filas\"")
+	cmdparser.add_argument('-n', '--dontshowrecordnumber'	, action="store_false", dest="addrecordnumber", help="No mostrar los números de cada registro")
+	cmdparser.add_argument('-z', '--horizontalmode'			, action="store_true", dest="horizontalmode", help="Modo de visualización horizontal")
+	cmdparser.add_argument('-a', '--addtotals'			    , action="store_true", dest="addtotals", help="Agregar una última fila con los totales de los campos númericos")
 	cmdparser.add_argument('-l', '--css-file'			    , action="store", dest="cssfile", help="Archivo de estilos (.Css) para la salida Html", metavar="\"archivo css\"")
-	
+
 	return cmdparser
 
+
 def showerror(msg):
-	print("\n!!!! %s error: %s\n" % (__appname__, msg) )
+	print("\n!!!! %s error: %s\n" % (__appname__, msg))
 
 
 def resource_path(relative):
@@ -165,7 +165,7 @@ if __name__ == "__main__":
 			application_path = os.path.dirname(sys.executable)
 		elif __file__:
 			application_path = os.path.dirname(__file__)
-		
+
 		# print("basedir : {0}".format(application_path))
 
 		default_fmt_file = 'parseit.fmt'
