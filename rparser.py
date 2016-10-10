@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
 # Copyright (c) 2014 Patricio Moracho <pmoracho@gmail.com>
 #
 # rparser.py
@@ -18,14 +17,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 """
-"""
 	TO DO:
 		+ Agregar exportación a Excel vía xlswriter
 		+ Agregar injectado de css para html por parametro
 		+ Problemas con FMT erroneos, no colgar y mostrar el error
 		+ Proceso de archivos CSV con registros a "skipear"
 		+ Mejorar la clase
-        + Agregar otros atributos para la identificación de archivos, por ejem. el nombre
+		+ Agregar otros atributos para la identificación de archivos, por ejem. el nombre
 		+ OK. Agregar totales a la salida
 		+ Ok. Mejorar e investigar el tema de los codecs. Unificar operaciones de lectura de archivo
 		+ Ok. Armar funcionalidad para listar formatos uno o todos
@@ -53,19 +51,19 @@ try:
 	import glob
 	import codecs
 	import struct
-	from tabulate import *
+	from tabulate import tabulate
 	from collections import OrderedDict
 	from datetime import datetime
-
 
 except ImportError as err:
 	modulename = err.args[0].split()[3]
 	print("No fue posible importar el modulo: %s" % modulename)
 	sys.exit(-1)
 
+
 class Parser(object):
 	"""Parser es el motor principal para entender los archivos de registros de longitud fija.
-   	"""
+	"""
 	def __init__(self, loadfrom, ignorefmterror=False):
 		"""
 		Inicialización del parser de archivos de longitud fija
@@ -84,7 +82,7 @@ class Parser(object):
 		self._records			= []
 		self._parseformat		= ""
 		self._parseformatname	= ""
-		self._inputfile_encoding= 'utf8'
+		self._inputfile_encoding = 'utf8'
 		self.dontusetables		= False
 		self.addrecordnum		= True
 		self.addtotals			= False
@@ -98,7 +96,7 @@ class Parser(object):
 		"""Carga los archivos .fmt de definición de formatos y completa los diccionarios:
 
 			- _fmtfiles : Lista de archivos .fmt a cargar
-			- _formats 	: colección de formatos
+			- _formats	: colección de formatos
 			- _tablas	: tablas de sustitución de valores
 
 		Args:
@@ -110,7 +108,6 @@ class Parser(object):
 		if not self._fmtfiles:
 			raise Exception('No se han encontrado en: {0} archivos con la definición de los formatos (FMT)'.format(self._loadfrom))
 
-		d1 = OrderedDict()
 		for f in self._fmtfiles:
 			try:
 				with open(f, "r", encoding='utf-8') as json_file:
@@ -124,7 +121,8 @@ class Parser(object):
 
 	def _add_format_info(self):
 		"""Agrega longitudes a cada formato,
-		 generación de la estructura para paseo."""
+		generación de la estructura para paseo.
+		"""
 
 		for k, f in self._formats.items():
 			ln = 0
@@ -144,7 +142,7 @@ class Parser(object):
 			- formatos: {3}
 			- parse   : {4}
 			- posibles: {5}
-			""".format(self.__hash__(), self._loadfrom, self._fmtfiles, [ (key,value.get("length",0)) for key, value in self._formats.items()], self._parsefile, self._formatos_posibles)
+			""".format(self.__hash__(), self._loadfrom, self._fmtfiles, [(key, value.get("length", 0)) for key, value in self._formats.items()], self._parsefile, self._formatos_posibles)
 		return r
 
 	def __repr__(self):
@@ -155,7 +153,7 @@ class Parser(object):
 		Devuelve una lista de enteros a partir de un string
 
 			"1,2,3,4"	--> [1,2,3,4]
-			"1-3,8" 	--> [1,2,3,8]
+			"1-3,8"		--> [1,2,3,8]
 
 		"""
 		def try_int(s):
@@ -165,13 +163,13 @@ class Parser(object):
 			except ValueError:
 				return 0
 
-		lista=[]
+		lista = []
 		if str:
 			for c in str.split(","):
 				if "-" in c:
-					rango=c.split("-")
-					for valor in range(try_int(rango[0]),try_int(rango[1])+1):
-						if	valor >= 1 and valor <= max:
+					rango = c.split("-")
+					for valor in range(try_int(rango[0]), try_int(rango[1])+1):
+						if valor >= 1 and valor <= max:
 							lista.append(valor)
 				else:
 					valor = try_int(c)
@@ -185,13 +183,13 @@ class Parser(object):
 
 		try:
 			self._inputfile_encoding = 'utf8'
-			with codecs.open(fname,'r',encoding='utf8') as f:
+			with codecs.open(fname, 'r', encoding='utf8') as f:
 				return f.read()
 
 		except UnicodeError:
 
 			self._inputfile_encoding = 'iso-8859-1'
-			with codecs.open(fname,'r',encoding='iso-8859-1') as f:
+			with codecs.open(fname, 'r', encoding='iso-8859-1') as f:
 				return f.read()
 
 	def set_file_to_parse(self, file):
@@ -207,10 +205,9 @@ class Parser(object):
 
 		self._formatos_posibles		= []
 		f = self._read_utf8ascii_file_as_uni(self._parsefile)
-		fln = len(f)
 		rln = len(f.splitlines()[0])
-		for k,f in self._formats.items():
-			l = f.get("length",0)
+		for k, f in self._formats.items():
+			l = f.get("length", 0)
 			if l != 0:
 				if rln == l:
 					self._formatos_posibles.append(k)
@@ -228,43 +225,43 @@ class Parser(object):
 		tablas_fmt	= self._tablas
 		estructura	= self._parseformat.get("struct")
 		fields		= self._parseformat.get("fields")
-		amounts = {i:v for i,(k,v) in enumerate(fields.items()) if v[1] == "amount"}
-		zamounts = {i:v for i,(k,v) in enumerate(fields.items()) if v[1] == "zamount"}
-		dates = {i:v for i,(k,v) in enumerate(fields.items()) if v[1] == "date"}
+		amounts = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "amount"}
+		zamounts = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "zamount"}
+		dates = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "date"}
 
 		if not self.dontusetables:
-			tablas = { i:v for i,(k,v) in enumerate(fields.items()) if v[1] == "table"}
+			tablas = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "table"}
 
-		with codecs.open(self._parsefile,'r',encoding=self._inputfile_encoding) as f:
-			for i, l in enumerate(f.readlines(),1):
+		with codecs.open(self._parsefile, 'r', encoding=self._inputfile_encoding) as f:
+			for i, l in enumerate(f.readlines(), 1):
 
 				# Parseo la linea y la combierto en un lista plana
 				b = struct.unpack(estructura, l.strip().encode('iso-8859-1'))
 				c = [c.decode('iso-8859-1') for c in b]
 
 				# Conversión a datos nativos para montos
-				for k,v in amounts.items():
-					c[k] = float(c[k].replace(",","."))
+				for k, v in amounts.items():
+					c[k] = float(c[k].replace(",", "."))
 
 				# Conversión a datos nativos para fechas
-				for k,v in dates.items():
+				for k, v in dates.items():
 					if c[k].strip() != '':
 						c[k] = datetime.strptime(c[k], v[2]).strftime(v[3])
 
 				# Conversión a datos nativos para montos zero paded
-				for k,v in zamounts.items():
+				for k, v in zamounts.items():
 					decimals = int(v[2])
 					c[k] = float(c[k][:len(c[k])-decimals] + "." + c[k][-decimals:])
 
 				# Reemplazo los valores de tabla
 				if not self.dontusetables:
 					try:
-						for k,v in tablas.items():
+						for k, v in tablas.items():
 							t = tablas_fmt.get(v[2])
 							try:
-								c[k] = "{0} - {1}".format( c[k], t[c[k]])
-							except KeyError as e:
-								c[k] = "{0} - {1}".format( c[k], "!!!error")
+								c[k] = "{0} - {1}".format(c[k], t[c[k]])
+							except KeyError:
+								c[k] = "{0} - {1}".format(c[k], "!!!error")
 
 					except Exception:
 						raise Exception('Error al al intentar procesar la tabla: {}'.format(v[2]))
@@ -281,7 +278,7 @@ class Parser(object):
 			new_fields = fields.__class__()
 			new_fields["# Reg."] = [8, "string", "", ""]
 			for key, value in fields.items():
-				new_fields[key]=value
+				new_fields[key] = value
 			fields.clear()
 			fields.update(new_fields)
 
@@ -317,27 +314,28 @@ class Parser(object):
 		formato = self._formats.get(nombre_formato, None)
 		if formato:
 			try:
-				campos	= [(i, k, v[0], v[1], v[2], v[3]) for i,(k,v) in enumerate(formato.get("fields").items(),1)]
+				campos	= [(i, k, v[0], v[1], v[2], v[3]) for i, (k, v) in enumerate(formato.get("fields").items(), 1)]
 				header	= ["#", "Nombre del campo", "Longitud", "Tipo", "info adicional", "formato salida"]
 				ln		= sum([ln for i, nom, ln, tipo, info, salida in campos])
 
-				print("\nFormato   : {1}\nCategoria : {0}\nLongitud  : {2}\n".format(formato.get("category","n/d"),nombre_formato,ln))
-				print(tabulate(	tabular_data	= campos,
-								headers			= header,
-								floatfmt		= "g",
-								tablefmt		= 'psql',
-								numalign		= "right",
-								stralign		= "left"))
+				print("\nFormato   : {1}\nCategoria : {0}\nLongitud  : {2}\n".format(formato.get("category", "n/d"), nombre_formato, ln))
+				print(tabulate(
+						tabular_data=campos,
+						headers=header,
+						floatfmt="g",
+						tablefmt='psql',
+						numalign="right",
+						stralign="left")
+				)
 
 			except Exception:
 				print("Error al procesar el formato: \"{0}\". Revise la configuración dek mismo.".format(nombre_formato))
 		else:
 			print("No se encontró el formato \"{0}\"".format(nombre_formato))
 
-
 	def export(self, export_format, showcols=None, showrows=None, horizontalmode=False):
 		"""
-		Exportación del archivo interpretado según  el format especificado
+		Exportación del archivo interpretado según	el format especificado
 
 		Args:
 
@@ -351,8 +349,8 @@ class Parser(object):
 
 		nombrecampos		= [k for k, v in self._parseformat.get("fields").items()]
 		propiedades			= [v for k, v in self._parseformat.get("fields").items()]
-		campos_a_mostrar 	= None
-		filas_a_mostrar 	= None
+		campos_a_mostrar	= None
+		filas_a_mostrar		= None
 
 		if showrows:
 			filas_a_mostrar = self._str_to_list(showrows, len(self._records))
@@ -418,16 +416,16 @@ class Parser(object):
 		else:
 			override_cols_align = None
 
-
-		tablestr = tabulate(tabular_data		= registros,
-							headers				= header_row,
-							floatfmt			= "8.2f",
-							tablefmt			= export_format,
-							numalign			= numalign,
-							stralign			= stralign,
-							override_cols_align = override_cols_align,
-							override_cols_fmt	= override_cols_fmt
-							)
+		tablestr = tabulate(
+						tabular_data=registros,
+						headers=header_row,
+						floatfmt="8.2f",
+						tablefmt=export_format,
+						numalign=numalign,
+						stralign=stralign,
+						override_cols_align=override_cols_align,
+						override_cols_fmt=override_cols_fmt
+					)
 
 		if export_format == "html":
 			css_default = """
@@ -474,14 +472,14 @@ class Parser(object):
 			}
 			"""
 
-			if self.cssfile != None:
+			if self.cssfile is not None:
 				css = self._read_utf8ascii_file_as_uni(self.cssfile)
 			else:
 				css = css_default
 
-			title		= 	'Archivo: {0} ({1})'.format(self._parsefile,self._parseformatname)
-			cantrows	= 	'Cantidad de registros visualizados: {0}'.format(real_rows)
-			tablestr 	=	'<!doctype html>\n' \
+			title		=	'Archivo: {0} ({1})'.format(self._parsefile,self._parseformatname)
+			cantrows	=	'Cantidad de registros visualizados: {0}'.format(real_rows)
+			tablestr	=	'<!doctype html>\n' \
 							'<html lang="en">\n' \
 							'<head>\n' \
 							'<meta charset="utf-8">\n' \
@@ -500,6 +498,6 @@ class Parser(object):
 					try:
 						os.startfile(self.outputfile)
 					except FileNotFoundError as e:
-						print(u"Ocurrio el error %s al intentar abrir el archivo '%s'" % (str(e), filename))
+						print(u"Ocurrio el error %s al intentar abrir el archivo '%s'" % (str(e), self.outputfile))
 		else:
 			print(tablestr)
