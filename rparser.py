@@ -44,6 +44,7 @@ __copyright__	= "2016, %s" % (__author__)
 __version__		= "1.1"
 __date__		= "2016/01/22 13:42:03"
 
+
 try:
 	import sys
 	import os
@@ -51,6 +52,7 @@ try:
 	import glob
 	import codecs
 	import struct
+	import csv
 	from tabulate import tabulate
 	from collections import OrderedDict
 	from datetime import datetime
@@ -131,6 +133,7 @@ class Parser(object):
 				ln = ln + c[0]
 				s = s + "{0}s".format(c[0])
 
+			self._formats.get(k).update({"fieldcount": len(f.get("fields", {}).values())})
 			self._formats.get(k).update({"length": ln})
 			self._formats.get(k).update({"struct": s})
 
@@ -196,8 +199,7 @@ class Parser(object):
 		self._parsefile = file
 
 	def get_posible_formats(self):
-		"""
-		Define y devuelve los posibles formatos del archivo a procesar.
+		"""Define y devuelve los posibles formatos del archivo a procesar.
 
 		Return:
 			_formatos_posibles	lista
@@ -206,21 +208,122 @@ class Parser(object):
 		self._formatos_posibles		= []
 		f = self._read_utf8ascii_file_as_uni(self._parsefile)
 		rln = len(f.splitlines()[0])
-		for k, f in self._formats.items():
+
+		# Solo los registros de lóngitud fija
+		for k, f in [ (k,self._formats[k]) for k in self._formats if self._formats[k].get("delimiter", "") == ""]:
 			l = f.get("length", 0)
 			if l != 0:
 				if rln == l:
 					self._formatos_posibles.append(k)
 
+		# Solo los registros con delimitador de campos
+		for k, f in [ (k,self._formats[k]) for k in self._formats if self._formats[k].get("delimiter", "") != ""]:
+			delimiter = f.get("delimiter", 0)
+			fieldcount = f.get("fieldcount",0)
+
+			notvalid = False
+			with open(self._parsefile) as csvfile:
+				reader = csv.reader(csvfile, delimiter=delimiter, quoting=csv.QUOTE_NONE)
+				for i, row in enumerate(reader,1):
+					if len(row) != fieldcount:
+						notvalid = True
+						break
+					# Leer solo los 3 primeros registros
+					if i > 3:
+						break
+
+			if not notvalid:
+				self._formatos_posibles.append(k)
+
+			# Leer las tres primeras filas del archivo si coinciden la cantidad
+			# de campos y el delimitador bien!
+
 		return self._formatos_posibles
 
 	def parseit_as(self, format_name):
-
-		self._parseformat		= self._formats.get(format_name)
+		self._parseformat		= self._formats.get(format_name,None)
 		self._parseformatname	= format_name
 
 		if self._parseformat is None:
 			raise Exception('el formato: {0} no existe o no ha sido definido completamente. Revise el/los archivo/s *.fmt.'.format(format_name))
+
+		if self._parseformat.get("delimiter") == "":
+			 self.parseit_fixed_as(format_name)
+		else:
+			 self.parseit_csv_as(format_name)
+
+	def parseit_csv_as(self, format_name):
+
+		self._parseformat		= self._formats.get(format_name,None)
+		self._parseformatname	= format_name
+
+		tablas_fmt	= self._tablas
+		estructura	= self._parseformat.get("struct")
+		fields		= self._parseformat.get("fields")
+		amounts = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "amount"}
+		zamounts = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "zamount"}
+		dates = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "date"}
+
+		if not self.dontusetables:
+			tablas = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "table"}
+
+		delimiter = self._parseformat.get("delimiter", 0)
+		fieldcount = self._parseformat.get("fieldcount",0)
+
+		with open(self._parsefile) as csvfile:
+			reader = csv.reader(csvfile, delimiter=delimiter, quoting=csv.QUOTE_NONE)
+
+			for i, row in enumerate(reader,1):
+				c = [c for c in row]
+
+				# Conversión a datos nativos para montos
+				for k, v in amounts.items():
+					c[k] = float(c[k].replace(",", "."))
+
+				# Conversión a datos nativos para fechas
+				for k, v in dates.items():
+					if c[k].strip() != '':
+						c[k] = datetime.strptime(c[k], v[2]).strftime(v[3])
+
+				# Conversión a datos nativos para montos zero paded
+				for k, v in zamounts.items():
+					decimals = int(v[2])
+					c[k] = float(c[k][:len(c[k])-decimals] + "." + c[k][-decimals:])
+
+				# Reemplazo los valores de tabla
+				if not self.dontusetables:
+					try:
+						for k, v in tablas.items():
+							t = tablas_fmt.get(v[2])
+							try:
+								c[k] = "{0} - {1}".format(c[k], t[c[k]])
+							except KeyError:
+								c[k] = "{0} - {1}".format(c[k], "!!!error")
+
+					except Exception:
+						raise Exception('Error al al intentar procesar la tabla: {}'.format(v[2]))
+
+				if self.addrecordnum:
+					c = [i] + c
+
+				self._records.append(c)
+
+		# ======================
+		# Arego un # de registro
+		# ======================
+		if self.addrecordnum:
+			new_fields = fields.__class__()
+			new_fields["# Reg."] = [8, "string", "", ""]
+			for key, value in fields.items():
+				new_fields[key] = value
+			fields.clear()
+			fields.update(new_fields)
+
+
+	def parseit_fixed_as(self, format_name):
+
+		self._parseformat		= self._formats.get(format_name,None)
+		self._parseformatname	= format_name
 
 		tablas_fmt	= self._tablas
 		estructura	= self._parseformat.get("struct")
@@ -376,7 +479,6 @@ class Parser(object):
 		header_row			= [nombrecampos[c-1] for c in campos_a_mostrar]
 		fields_props		= [propiedades[c-1] for c in campos_a_mostrar]
 		override_cols_fmt	= [p[3] if p[3] else None for p in fields_props]
-
 		# Sumarizar campos
 		if self.addtotals:
 			scampos = [i for i, c in enumerate(registros[0], 0) if (isinstance(c, int) or isinstance(c, float)) and i != 0]
