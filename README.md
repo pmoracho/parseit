@@ -206,10 +206,10 @@ parseit.git
 
 ## Preparación del entorno virtual local
 
-Para poder ejecutar, o crear la distribución de la herramientas, lo primero que deberemos hacer es armar un entorno python "virtual" que alojaremos en una subcarpeta del directorio principal que llamarems "venv". En el proyecto incorporamos una herramienta de automatización de algunas tareas básicas. Se trata de `make.py`, la forma de ejecutarlo es la siguiente: `python tools\make.py` la ejecución si parámetros arrojará una salida como lo que sigue:
+Para poder ejecutar, o crear la distribución de la herramientas, lo primero que deberemos hacer es armar un entorno python "virtual" que alojaremos en una subcarpeta del directorio principal que llamarems "venv". En el proyecto incorporamos una herramienta de automatización de algunas tareas básicas. Se trata de `make.py`, la forma de ejecutarlo es la siguiente: `python tools\make.py <comando>` la ejecución si parámetros o mediante el parámetro `--help` arrojará una salida como lo que sigue:
 
 ```
-Automatización de tareas para el proyecto Openerm
+Automatización de tareas para el proyecto Paresit
 (c) 2016, Patricio Moracho <pmoracho@gmail.com>
 
 Uso: make <command> [<args>]
@@ -217,12 +217,20 @@ Uso: make <command> [<args>]
 Los comandos más usados:
    devcheck   Hace una verificación del entorno de desarrollo
    devinstall Realiza la instalación del entorno de desarrollo virtual e instala los requerimientos
+   docinstall Intalación de Sphinx
    clear      Elimina archivos innecesarios
    test       Ejecuta todos los tests definidos del proyecto
-   tools      Construye la distribución binaria de las herramientas del proyecto
+   build      Construye la distribución binaria de las herramientas del proyecto
 
-make.py: error: los siguientes argumentos son requeridos: command
+argumentos posicionales:
+  command     Comando a ejecutar
+
+argumentos opcionales:
+  -h, --help  mostrar esta ayuda y salir
 ```
+
+**Importante**: Make.py asume que se está ejecutando fuera del entorno virtual del proyecto.
+
 Para preparar el entorno virtual simplemente haremos `python tools\make.py devinstall`, este proceso si resulta exitoso deberá haber realizado las siguientes tareas:
 
 * Creación de un entorno pyhton virtual en la carpeta "venv", invocable mediante `venv\Scripts\activate.bat` en Windows o `source venv/Scripts/activate` en entornos Linux o Cygwin/Mingw (en Windows)
