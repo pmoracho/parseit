@@ -3,11 +3,13 @@ Parseit
 
 `Parseit` es una herramienta de linea de comandos para "interpretar" archivos de texto con formato. 
 
-Para entender que es `parseit` nada mejor que un ejemplo práctico. Para el intercambio de información con el Afip, se 
-suele trabajar con este tipo de archivos, en particular los contribuyentes grandes, que suelen generar gran cantidad
-de información, veamos un caso típico, el Sistema federal de información más conocido domo **SIFERE** permite
-importar masivamente la información de retenciones y percepciones, la información se arma en archivos de texto, 
-con campos de lóngitud fija y caracteres de fin de linea:
+Para entender que es `parseit` nada mejor que un ejemplo práctico. Para el intercambio de información con el **Afip**
+(Agencia federal de ingresos públicos), se suele trabajar con este tipo de archivos. En particular los contribuyentes 
+grandes, que suelen generar gran cantidad de información, y a los que les resulta más óptimo trabajar mediante la
+importación de archivos directamente en los aplicativos del mencionado organismo. Veamos un caso típico de una 
+aplicación, la del Sistema federal de información más conocido como **SIFERE** que permite
+importar masivamente la información de retenciones y percepciones. El arhcivo de importación (texto, con campos de 
+lóngitud fija y caracteres de fin de linea) tiene un formato ya definido como el siguiente:
 
 ```
 90130-00000000-901/01/200612341234567891234560FA0000000000010000123500000125,20
@@ -15,7 +17,8 @@ con campos de lóngitud fija y caracteres de fin de linea:
 90130-00000000-901/01/200612341234567891234560FA0000000000010000123500000125,20
 ```
 
-Para poder interpretar este archivo, se "define" el formato en una archivo JSON, por ejemplo asi:
+Para poder interpretar este archivo, usando la documentación oportunamente publicada por el Afip, definiremos
+dicho formato en una archivo JSON, por ejemplo de la siguiente forma:
 
 ```
 		"sifere-retenciones": {
@@ -35,9 +38,9 @@ Para poder interpretar este archivo, se "define" el formato en una archivo JSON,
 		},
 
 ```
-Notese que además de definir la longitud de cada campo, definimos el formato y particularmente definimos
-que algunos campos son "tablas", dónde el dato en sí hace referencia a una tabla de valores definida también 
-para que de esta forma podamos visualizar completamente la información:
+Notese que además de definir la longitud de cada campo, definimos el tipo de datos y particularmente algunos de
+los campos son "tablas", dónde el dato en sí hace referencia a una tabla de valores ya definida también en el 
+archivo, por ejemplo algo así:
 
 ```
 	"sifere-jurisdicciones": {
@@ -77,10 +80,11 @@ para que de esta forma podamos visualizar completamente la información:
 
 De esta forma tenemos:
 * Un archivo de texto con información en campos de lóngitud fija, por ejemplo: `sifere.dat`
-* Una definción JSON del formato, en un archivo de nombre `parseit.fmt`
+* Una definción JSON del formato, en un archivo de nombre `parseit.fmt` (puede ser cualquier nombre, pero esto se lee automáticamente)
 * La herramienta `parseit` o `parseit.exe`
 
-Con esta configuración al invocar `parseit sifere.dat` obtendremos una salida como está:
+Con esta configuración al invocar `parseit sifere.dat` o ventualmente `python parseit sifere.dat` obtendremos en la línea de
+comandos una salida como está:
 
 ```
 +----------+--------------------------+--------------------------------+-------------------------+----------------------+------------------------+-----------------------+-------------------------+----------------------------------+--------------------+
@@ -93,15 +97,21 @@ Con esta configuración al invocar `parseit sifere.dat` obtendremos una salida co
 
 ```
 
+Que hizó `parseit`?
+* Identificó y relacionó automáticamente al archivo de entrada con el formato definido anteriormente
+* Extrajo los campos del archivo original y los separados y formateo convenientemente
+* Agregó un titulo a cada columna según lo definido en el archivo de configuración JSON
+* Completó la información en los campos tipo "tabla"  de la forma código - valor para mejorar la legibilidad
 
-Algunos puntos claves de este proyecto:
-=======================================
+
+# Algunos puntos claves de este proyecto:
 
 * Herramienta de línea de comandos
-* Interpretación de archivos de texto de formato especifico, con caracter de fin de línea. Más adelante veremos como manejar otros formatos.
+* Interpretación de archivos de texto de formato especifico, con caracter de fin de línea. 
+* Interpretación de archivos CSV (valores separados por delimitadores). 
 * Uso de archivos JSON para la definición del formato (consultar parseit.json)
-	* Definicón de campos, longitudes y formatos varios
-	* Definción de valores tipo tabla (codigo: valor) para reemplazo al mostrar de los mismos
+	* Definicoón de campos, longitudes y formatos varios
+	* Definición de valores tipo tabla (codigo: valor) para reemplazo al mostrar de los mismos
 * Especificación de un formato determinado o por defecto el archivo "parseit.fmt" que estuviera en la misma carpeta de ejecutable
 * Varios formatos de exportación de los datos, entre otros:
 	* psql 
@@ -110,26 +120,24 @@ Algunos puntos claves de este proyecto:
 	* etc.
 * Definir que filas y que columnas mostrar
 * Útil visualización o "transposición" de la tabla al modo "horizontal"
-* Poder incorporar un hoja de estilos cuando los datos los mostramos en html
-* Poder exportar a un archivo determinado y apertura automática del mismo
-* Con la distribución se distribuyen los formatos para interpretar los archivos de texto para el Siap / Afip:
+* Poder incorporar un hoja de estilos cuando los datos los exportamos a html
+* Poder exportar a un archivo determinado y apertura automática del mismo. 
+* Con la distribución se agregan los formatos para interpretar los archivos de texto para el Siap / Afip:
 	* **ARCIBA**: debitos y créditos
 	* **RG3685**: Compras: comprobantes y alicuotas, Ventas: comprobantes y alicuotas
 	* **SIFERE**: Retenciones y percepciones
 	* **SICORE**: Retenciones y percepciones
 
 
-Requerimientos e instalación:
-=============================
+# Requerimientos e instalación:
 
-En Windows, nada en particular ya que se distribuye la herramienta "congelada" mediante **Pyinstaller**. Descargarla y copiarla en alguna carpeta del sistema, idealmente que este apuntada al path.
+En Windows, nada en particular ya que se distribuye la herramienta "congelada" mediante **Pyinstaller**. Descargarla y copiarla en alguna carpeta del sistema, idealmente que esté apuntada al path.
 
-* Para descargar y descomprimir **Parseit**, hacer click [aqui](https://bitbucket.org/pmoracho/python.projects/raw/bd19d803a17e2fe6720fc603117a75d2cd1c6b76/parse/dist/parseit-20160606.zip)
+* Para descargar y descomprimir **Parseit**, hacer click [aqui](https://github.com/pmoracho/parseit/blob/master/dist/parseit-20161011.zip)
 * El proyecto en [**Github**](https://github.com/pmoracho/parseit)
 
 
-Uso:
-====
+# Uso:
 
 ```
 
@@ -180,8 +188,7 @@ Ejemplos de uso:
   parseit -h  
 ```
 
-Desarrollo:
-===========
+# Notas para el desarrollador:
 
 ## Requisitos iniciales
 
@@ -244,12 +251,15 @@ Para preparar el entorno virtual simplemente haremos `python tools\make.py devin
 * Usar "soft tabs": Con cualquier editor que usemos configurar el uso del <tab> en vez de los espacios, yo prefiero el <tab> puro al espacio, entiendo que es válido el otro criterio pero ya los fuentes están con esta configuración, por lo que para evitar problemas al compilar los .py recomiendo seguir usando este criterio. Asimismo configurar en 4 posiciones estos <tab>.
 
 
-### Formatos
+## Formatos
 + Los formatos se definen en uno o más archivos .FMT que no son más que archivos [JSON](http://www.json.org/)
 + [JSON Editor Online](http://www.jsoneditoronline.org/) Para validar la edición del archivo de formatos
 
-Changelog:
-==========
+# Changelog:
+
+#### Version 1.2 - 2016-10-11
+* Primera funcionalidad para el manejo de archivos CSV (separado por delimitador)
+* Notas varias para el desarrollador
 
 #### Version 1.1
 * Primer release oficial de la herramienta
