@@ -221,7 +221,7 @@ Ejemplos de uso:
 
 ## Filtrar filas y columnas
 
-**`parseit sample/padron.txt -r 4-9,12 -c 1-10,13`** Filtra los registros 4 al
+### **`parseit sample/padron.txt -r 4-9,12 -c 1-10,13`** Filtra los registros 4 al
 9 y el 12, y muestra las columnas 1 a 10 y la 13 
 
 ```
@@ -239,7 +239,7 @@ Ejemplos de uso:
 
 ```
 
-**`parseit sample/padron.txt -r 4,11 -z`** Muestra solo los registros 4 y 11 y
+### **`parseit sample/padron.txt -r 4,11 -z`** Muestra solo los registros 4 y 11 y
 los muestra en le modo horizontal.
 
 ```
@@ -277,13 +277,82 @@ los muestra en le modo horizontal.
 +---------------------+---------------------+
 ```
 
-**`parseit sample/padron.txt -r 4,11 -e csv`** Muestra solo los registros 4 y 11 y
+### **`parseit sample/padron.txt -r 4,11 -e csv`** Muestra solo los registros 4 y 11 y
 los exporta en la forma tradicional CSV, por ejemplo para importar a un Excel.
 
 ```
 "# Reg.";"Fecha Publ.";"Fecha Desde";"Fecha Hasta";"CUIT";"Tipo";"Marca Alta";"Marca Alícuota";"Percepción";"Retención";"Grupo Percep.";"Grupo Retención.";"Razón Social"
 "4";"27-06-2016";"01-11-2016";"30-11-2016";"20044290775";"D - Directo";"S";"N";"    1.50";"    1.50";"16";"16";"LADEDA HORACIO JOSE"
 "11";"23-09-2016";"01-10-2016";"31-12-2016";"20004242042";"D - Directo";"S";"N";"    6.00";"    4.50";"00";"00";"PEQA JUAN CARLOS"
+```
+
+### **`parseit.py sample/padron.txt -r 4,11 -e html`
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="parseit - Parseador de archivos">
+<meta name="author" content="2016, Patricio Moracho <pmoracho@gmail.com>">
+<style type="text/css">
+
+                        table.tabulate {
+                                font-family: Verdana, Geneva, sans-serif;
+                                font-size:10px;
+                                color:#000000;
+                                border-width: 1px;
+                                border-color: #eeeeee;
+                                border-collapse: collapse;
+                                background-color: #ffffff;
+                                width: 100%;
+                                table-layout: auto;
+                        }
+                        table.tabulate th {
+                                border-width: 1px;
+                                padding: 1px;
+                                border-style: solid;
+                                border-color: #eeeeee;
+                                background-color: #004f6f;
+                                color:#fff;
+                                text-align: left;
+                        }
+                        table.tabulate td {
+                                border-width   : 1px;
+                                padding            : 1px;
+                                border-style   : solid;
+                                border-color   : #eeeeee;
+                                vertical-align : top;
+                        }
+                        table.tabulate tr:nth-of-type(even) {
+                                background-color:#D2E4FC;
+                        }
+                        table.tabulate tr:nth-of-type(odd) {
+                                background-color:#F7FDFA;
+                        }
+                        p {
+                                font-family: Verdana, Geneva, sans-serif;
+                                font-size:14px;
+                                width: 100%;
+                                padding: 0px;
+                                margin: 0px;
+                                text-align: center;
+                        }
+
+</style>
+<title>Archivo: sample/padron.txt (Padron-iibb-general)</title>
+</head>
+<body>
+<p><b>Archivo: sample/padron.txt (Padron-iibb-general)</b></p><p>Cantidad de registros visualizados: 2</p><p></br></p><table class=tabulate>
+<thead>
+<tr><th style="text-align: right;"># Reg.</th><th>Fecha Publ.</th><th>Fecha Desde</th><th>Fecha Hasta</th><th style="text-align: right;">CUIT</th><th>Tipo</th><th>Marca Alta</th><th>Marca Al&iacute;cuota</th><th style="text-align: right;">Percepci&oacute;n</th><th style="text-align: right;">Retenci&oacute;n</th><th style="text-align: right;">Grupo Percep.</th><th style="text-align: right;">Grupo Retenci&oacute;n.</th><th>Raz&oacute;n Social</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: right;">4</td><td>27-06-2016</td><td>01-11-2016</td><td>30-11-2016</td><td style="text-align: right;">20044290775</td><td>D - Directo</td><td>S</td><td>N</td><td style="text-align: right;">1.50</td><td style="text-align: right;">1.50</td><td style="text-align: right;">16</td><td style="text-align: right;">16</td><td>LADEDA HORACIO JOSE</td></tr>
+<tr><td style="text-align: right;">11</td><td>23-09-2016</td><td>01-10-2016</td><td>31-12-2016</td><td style="text-align: right;">20004242042</td><td>D - Directo</td><td>S</td><td>N</td><td style="text-align: right;">6.00</td><td style="text-align: right;">4.50</td><td style="text-align: right;">00</td><td style="text-align: right;">00</td><td>PEQA JUAN CARLOS</td></tr>
+</tbody>
+</table></body>
+</html>
 ```
 
 # Notas para el desarrollador:
