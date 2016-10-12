@@ -13,7 +13,7 @@ los que les resulta más óptimo trabajar mediante la importación de archivos
 directamente en los aplicativos del mencionado organismo. Veamos un caso típico
 de una aplicación, la del Sistema federal de información más conocido como
 **SIFERE** que permite importar masivamente la información de retenciones y
-percepciones. El arhcivo de importación (texto, con campos de lóngitud fija y
+percepciones. El archivo de importación (texto, con campos de longitud fija y
 caracteres de fin de linea) tiene un formato ya definido como el siguiente:
 
 ```
@@ -23,7 +23,7 @@ caracteres de fin de linea) tiene un formato ya definido como el siguiente:
 ``` 
 
 Leer un archivo así tiene sus complicaciones, si bien los datos están en texto
-claro resulta complicado analizarlo, y aquí es dónde entar **Parseit**.  Para
+claro resulta complicado analizarlo, y aquí es dónde entra **Parseit**.  Para
 poder interpretar este archivo de una forma más conveniente, y usando la
 documentación que oportunamente Para preparar el entorno virtual simplemente
 haremos `python tools\make.py devinstall`, este proceso si resulta exitoso
@@ -49,7 +49,7 @@ dicho formato en una archivo JSON, por ejemplo de la siguiente forma:
 
 ``` 
 
-Notese que además de definir la longitud de cada campo y el orden, definimos el
+Nótese que además de definir la longitud de cada campo y el orden, definimos el
 tipo de datos y particularmente algunos de los campos son "tablas", dónde el
 dato en sí hace referencia a una tabla de valores ya definida también en el
 archivo, por ejemplo algo así:
@@ -91,13 +91,13 @@ archivo, por ejemplo algo así:
 ```
 
 De esta forma tenemos:
-* Un archivo de texto con información en campos de lóngitud fija, por ejemplo:
+* Un archivo de texto con información en campos de longitud fija, por ejemplo:
   `sifere.dat`
-* Una definción JSON del formato, en un archivo de nombre `parseit.fmt` (puede
+* Una definición JSON del formato, en un archivo de nombre `parseit.fmt` (puede
   ser cualquier nombre, pero esto se lee automáticamente)
 * La herramienta `parseit` o `parseit.exe`
 
-Con esta configuración al invocar `parseit sifere.dat` o ventualmente `python
+Con esta configuración al invocar `parseit sifere.dat` o eventualmente `python
 parseit sifere.dat` obtendremos en la línea de comandos una salida como está:
 
 ```
@@ -111,10 +111,10 @@ parseit sifere.dat` obtendremos en la línea de comandos una salida como está:
 
 ```
 
-Que hizó `parseit`?
+Que hizo `parseit`?
 * Identificó y relacionó automáticamente al archivo de entrada con el formato
   definido anteriormente
-* Extrajo los campos del archivo original y los separao y formateo
+* Extrajo los campos del archivo original y los separo y formateo
   convenientemente
 * Agregó un titulo a cada columna según lo definido en el archivo de
   configuración JSON
@@ -127,12 +127,12 @@ Que hizó `parseit`?
 # Algunos puntos claves de este proyecto:
 
 * Herramienta de línea de comandos
-* Interpretación de archivos de texto de formato especifico, con caracter de
+* Interpretación de archivos de texto de formato especifico, con caractér de
   fin de línea. 
 * Interpretación de archivos CSV (valores separados por delimitadores). 
 * Uso de archivos JSON para la definición del formato (consultar parseit.json)
-	* Definicoón de campos, longitudes y formatos varios
-	* Definición de valores tipo tabla (codigo: valor) para reemplazo al
+	* Definición de campos, longitudes y formatos varios
+	* Definición de valores tipo tabla (código: valor) para reemplazo al
 	  mostrar de los mismos
 * Especificación de un formato determinado o por defecto el archivo
   "parseit.fmt" que estuviera en la misma carpeta de ejecutable
@@ -147,8 +147,8 @@ Que hizó `parseit`?
 * Poder exportar a un archivo determinado y apertura automática del mismo. 
 * Con la distribución se agregan los formatos para interpretar los archivos de
   texto para el Siap / Afip:
-	* **ARCIBA**: debitos y créditos
-	* **RG3685**: Compras: comprobantes y alicuotas, Ventas: comprobantes y
+	* **ARCIBA**: débitos y créditos
+	* **RG3685**: Compras: comprobantes y alícuotas, Ventas: comprobantes y
 	  alicuotas
 	* **SIFERE**: Retenciones y percepciones
 	* **SICORE**: Retenciones y percepciones
@@ -289,7 +289,7 @@ Muestra solo los registros 4 y 11 y los exporta en la forma tradicional CSV, por
 
 ## `parseit sample/padron.txt -r 4,11 -e html`
 
-Generar una salida html de los registrs 4 y 11
+Generar una salida html de los registros 4 y 11
 
 ```html
 <!doctype html>
@@ -378,7 +378,7 @@ Windows 32 bits, los pasos para versiones de 64 bits son sustancialmente
 distintos, en particular por algunos de los "paquetes" que se construyen a
 partir de módulos en C o C++, de igual forma la instalación sobre Linux tiene
 sus grandes diferencias. Eventualmente profundizaremos sobre estos entornos,
-pero en principo volvemos a señalar que el siguiente detalle aplica a los
+pero en principio volvemos a señalar que el siguiente detalle aplica a los
 ambientes Windows de 32 bits:
 
 * Obviamente en primer lugar necesitaremos
@@ -394,7 +394,7 @@ ambientes Windows de 32 bits:
 * [Virutalenv](https://virtualenv.pypa.io/en/stable/). Es la herramienta
   estándar para crear entornos "aislados" de python. Para no tener conflictos
   de desarrollo lo que haremos mediante esta herramienta es crear un "entorno
-  virtual" de python en una carpeta del projecto (venv). Este "entorno virtual"
+  virtual" de python en una carpeta del proyecto (venv). Este "entorno virtual"
   contendrá una copia completa de Python, al activarlo se modifica el PATH al
   python.exe que apuntará ahora a nuestra carpeta del entorno, evitando
   cualquier tipo de conflicto con un entorno Python ya existente. La
@@ -419,7 +419,7 @@ parseit.git
 
 Para poder ejecutar, o crear la distribución de la herramientas, lo primero que
 deberemos hacer es armar un entorno python "virtual" que alojaremos en una
-subcarpeta del directorio principal que llamarems "venv". En el proyecto
+subcarpeta del directorio principal que llamaremos "venv". En el proyecto
 incorporamos una herramienta de automatización de algunas tareas básicas. Se
 trata de `make.py`, la forma de ejecutarlo es la siguiente: `python
 tools\make.py <comando>` la ejecución si parámetros o mediante el parámetro
