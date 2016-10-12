@@ -25,10 +25,8 @@ caracteres de fin de linea) tiene un formato ya definido como el siguiente:
 Leer un archivo así tiene sus complicaciones, si bien los datos están en texto
 claro resulta complicado analizarlo, y aquí es dónde entra **Parseit**.  Para
 poder interpretar este archivo de una forma más conveniente, y usando la
-documentación que oportunamente Para preparar el entorno virtual simplemente
-haremos `python tools\make.py devinstall`, este proceso si resulta exitoso
-deberá haber realizado las siguientes tareas: publica el Afip, podemos definir
-dicho formato en una archivo JSON, por ejemplo de la siguiente forma:
+documentación que oportunamente publica el Afip, podemos definir dicho formato
+en una archivo JSON, por ejemplo de la siguiente forma:
 
 ```
 		"sifere-retenciones": {
