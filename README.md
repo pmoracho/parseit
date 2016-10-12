@@ -4,16 +4,16 @@ Parseit
 `Parseit` es una herramienta de linea de comandos para "interpretar" archivos
 de texto con formato (Con o sin delimitador). 
 
-Para entender que es `parseit` nada mejor que un ejemplo práctico:
+Para entender que es `parseit` nada mejor que un ejemplo prÃ¡ctico:
 
-Para el intercambio de información con el **Afip** (Agencia federal de ingresos
-públicos), se suele trabajar con este tipo de archivos. En particular los
-contribuyentes grandes, que suelen generar gran cantidad de información, y a
-los que les resulta más óptimo trabajar mediante la importación de archivos
-directamente en los aplicativos del mencionado organismo. Veamos un caso típico
-de una aplicación, la del Sistema federal de información más conocido como
-**SIFERE** que permite importar masivamente la información de retenciones y
-percepciones. El archivo de importación (texto, con campos de longitud fija y
+Para el intercambio de informaciÃ³n con el **Afip** (Agencia federal de ingresos
+pÃºblicos), se suele trabajar con este tipo de archivos. En particular los
+contribuyentes grandes, que suelen generar gran cantidad de informaciÃ³n, y a
+los que les resulta mÃ¡s Ã³ptimo trabajar mediante la importaciÃ³n de archivos
+directamente en los aplicativos del mencionado organismo. Veamos un caso tÃ­pico
+de una aplicaciÃ³n, la del Sistema federal de informaciÃ³n mÃ¡s conocido como
+**SIFERE** que permite importar masivamente la informaciÃ³n de retenciones y
+percepciones. El archivo de importaciÃ³n (texto, con campos de longitud fija y
 caracteres de fin de linea) tiene un formato ya definido como el siguiente:
 
 ```
@@ -22,12 +22,12 @@ caracteres de fin de linea) tiene un formato ya definido como el siguiente:
 90130-00000000-901/01/200612341234567891234560FA0000000000010000123500000125,20
 ``` 
 
-Leer un archivo así tiene sus complicaciones, si bien los datos están en texto
-claro resulta complicado analizarlo, y aquí es dónde entra **Parseit**.  Para
-poder interpretar este archivo de una forma más conveniente, y usando la
-documentación que oportunamente Para preparar el entorno virtual simplemente
+Leer un archivo asÃ­ tiene sus complicaciones, si bien los datos estÃ¡n en texto
+claro resulta complicado analizarlo, y aquÃ­ es dÃ³nde entra **Parseit**.  Para
+poder interpretar este archivo de una forma mÃ¡s conveniente, y usando la
+documentaciÃ³n que oportunamente Para preparar el entorno virtual simplemente
 haremos `python tools\make.py devinstall`, este proceso si resulta exitoso
-deberá haber realizado las siguientes tareas: publica el Afip, podemos definir
+deberÃ¡ haber realizado las siguientes tareas: publica el Afip, podemos definir
 dicho formato en una archivo JSON, por ejemplo de la siguiente forma:
 
 ```
@@ -35,43 +35,43 @@ dicho formato en una archivo JSON, por ejemplo de la siguiente forma:
 			"category": "Afip.Sifere",
 			"delimiter": "",
 			"fields": {
-				"Código de Jurisdicción":         [ 3, "table", "sifere-jurisdicciones", ""],
-				"CUIT del Agente de Retención":   [13, "string", "", ""],
-				"Fecha de la Retención":          [10, "date", "%d/%m/%Y", "%d-%m-%Y"],
-				"Número de Sucursal":             [ 4, "string", "", ""],
-				"Número de constancia":           [16, "string", "", ""],
+				"CÃ³digo de JurisdicciÃ³n":         [ 3, "table", "sifere-jurisdicciones", ""],
+				"CUIT del Agente de RetenciÃ³n":   [13, "string", "", ""],
+				"Fecha de la RetenciÃ³n":          [10, "date", "%d/%m/%Y", "%d-%m-%Y"],
+				"NÃºmero de Sucursal":             [ 4, "string", "", ""],
+				"NÃºmero de constancia":           [16, "string", "", ""],
 				"Tipo de Comprobante":            [ 1, "table", "sifere-tipo-comprobantes", ""],
 				"Letra del Comprobante":          [ 1, "string", "", ""],
-				"Número de Comprobante Original": [20, "string", "", ""],
+				"NÃºmero de Comprobante Original": [20, "string", "", ""],
 				"Importe Retenido":               [11, "amount", "", ""]
 			}
 		},
 
 ``` 
 
-Nótese que además de definir la longitud de cada campo y el orden, definimos el
-tipo de datos y particularmente algunos de los campos son "tablas", dónde el
-dato en sí hace referencia a una tabla de valores ya definida también en el
-archivo, por ejemplo algo así:
+NÃ³tese que ademÃ¡s de definir la longitud de cada campo y el orden, definimos el
+tipo de datos y particularmente algunos de los campos son "tablas", dÃ³nde el
+dato en sÃ­ hace referencia a una tabla de valores ya definida tambiÃ©n en el
+archivo, por ejemplo algo asÃ­:
 
 ```
 	"sifere-jurisdicciones": {
 		"901": "Capital Federal",
 		"902": "Buenos Aires",
 		"903": "Catamarca",
-		"904": "Córdoba",
+		"904": "CÃ³rdoba",
 		"905": "Corrientes",
 		"906": "Chaco",
 		"907": "Chubut",
-		"908": "Entre Ríos",
+		"908": "Entre RÃ­os",
 		"909": "Formosa",
 		"910": "Jujuy",
 		"911": "La Pampa",
 		"912": "La Rioja",
 		"913": "Mendoza",
 		"914": "Misiones",
-		"915": "Neuquén",
-		"916": "Río Negro",
+		"915": "NeuquÃ©n",
+		"916": "RÃ­o Negro",
 		"917": "Salta",
 		"918": "San Juan",
 		"919": "San Luis",
@@ -79,30 +79,30 @@ archivo, por ejemplo algo así:
 		"921": "Santa Fe",
 		"922": "Santiago del Estero",
 		"923": "Tierra del Fuego",
-		"924": "Tucumán"
+		"924": "TucumÃ¡n"
 	},
 	"sifere-tipo-comprobantes": {
 		"F": "Factura",
 		"R": "Recibo", 
-		"D": "Nota de Débito",
-		"C": "Nota de Crédito",
+		"D": "Nota de DÃ©bito",
+		"C": "Nota de CrÃ©dito",
 		"O": "Otro"
 	},
 ```
 
 De esta forma tenemos:
-* Un archivo de texto con información en campos de longitud fija, por ejemplo:
+* Un archivo de texto con informaciÃ³n en campos de longitud fija, por ejemplo:
   `sifere.dat`
-* Una definición JSON del formato, en un archivo de nombre `parseit.fmt` (puede
-  ser cualquier nombre, pero esto se lee automáticamente)
+* Una definiciÃ³n JSON del formato, en un archivo de nombre `parseit.fmt` (puede
+  ser cualquier nombre, pero esto se lee automÃ¡ticamente)
 * La herramienta `parseit` o `parseit.exe`
 
-Con esta configuración al invocar `parseit sifere.dat` o eventualmente `python
-parseit sifere.dat` obtendremos en la línea de comandos una salida como está:
+Con esta configuraciÃ³n al invocar `parseit sifere.dat` o eventualmente `python
+parseit sifere.dat` obtendremos en la lÃ­nea de comandos una salida como estÃ¡:
 
 ```
 +----------+--------------------------+--------------------------------+-------------------------+----------------------+------------------------+-----------------------+-------------------------+----------------------------------+--------------------+
-|   # Reg. | Código de Jurisdicción   | CUIT del Agente de Retención   | Fecha de la Retención   |   Número de Sucursal |   Número de constancia | Tipo de Comprobante   | Letra del Comprobante   |   Número de Comprobante Original |   Importe Retenido |
+|   # Reg. | CÃ³digo de JurisdicciÃ³n   | CUIT del Agente de RetenciÃ³n   | Fecha de la RetenciÃ³n   |   NÃºmero de Sucursal |   NÃºmero de constancia | Tipo de Comprobante   | Letra del Comprobante   |   NÃºmero de Comprobante Original |   Importe Retenido |
 |----------+--------------------------+--------------------------------+-------------------------+----------------------+------------------------+-----------------------+-------------------------+----------------------------------+--------------------|
 |        1 | 901 - Capital Federal    | 30-00000000-9                  | 01-01-2006              |                 1234 |       1234567891234560 | F - Factura           | A                       |             00000000000100001235 |             125.20 |
 |        2 | 901 - Capital Federal    | 30-00000000-9                  | 01-01-2006              |                 1234 |       1234567891234560 | F - Factura           | A                       |             00000000000100001235 |             125.20 |
@@ -112,54 +112,54 @@ parseit sifere.dat` obtendremos en la línea de comandos una salida como está:
 ```
 
 Que hizo `parseit`?
-* Identificó y relacionó automáticamente al archivo de entrada con el formato
+* IdentificÃ³ y relacionÃ³ automÃ¡ticamente al archivo de entrada con el formato
   definido anteriormente
 * Extrajo los campos del archivo original y los separo y formateo
   convenientemente
-* Agregó un titulo a cada columna según lo definido en el archivo de
-  configuración JSON
-* Completó la información en los campos tipo "tabla" de la forma código -
+* AgregÃ³ un titulo a cada columna segÃºn lo definido en el archivo de
+  configuraciÃ³n JSON
+* CompletÃ³ la informaciÃ³n en los campos tipo "tabla" de la forma cÃ³digo -
   valor para mejorar la legibilidad
-* Formateo también los campos fecha para mejorar la lectura
-* Agregó una útil columna `# Reg`
+* Formateo tambiÃ©n los campos fecha para mejorar la lectura
+* AgregÃ³ una Ãºtil columna `# Reg`
 
 
 # Algunos puntos claves de este proyecto:
 
-* Herramienta de línea de comandos
-* Interpretación de archivos de texto de formato especifico, con caractér de
-  fin de línea. 
-* Interpretación de archivos CSV (valores separados por delimitadores). 
-* Uso de archivos JSON para la definición del formato (consultar parseit.json)
-	* Definición de campos, longitudes y formatos varios
-	* Definición de valores tipo tabla (código: valor) para reemplazo al
+* Herramienta de lÃ­nea de comandos
+* InterpretaciÃ³n de archivos de texto de formato especifico, con caractÃ©r de
+  fin de lÃ­nea. 
+* InterpretaciÃ³n de archivos CSV (valores separados por delimitadores). 
+* Uso de archivos JSON para la definiciÃ³n del formato (consultar parseit.json)
+	* DefiniciÃ³n de campos, longitudes y formatos varios
+	* DefiniciÃ³n de valores tipo tabla (cÃ³digo: valor) para reemplazo al
 	  mostrar de los mismos
-* Especificación de un formato determinado o por defecto el archivo
+* EspecificaciÃ³n de un formato determinado o por defecto el archivo
   "parseit.fmt" que estuviera en la misma carpeta de ejecutable
-* Varios formatos de exportación de los datos, entre otros:
+* Varios formatos de exportaciÃ³n de los datos, entre otros:
 	* psql 
 	* csv
 	* html
 	* etc.
 * Definir que filas y que columnas mostrar
-* Útil visualización o "transposición" de la tabla al modo "horizontal"
+* Ãštil visualizaciÃ³n o "transposiciÃ³n" de la tabla al modo "horizontal"
 * Poder incorporar un hoja de estilos cuando los datos los exportamos a html
-* Poder exportar a un archivo determinado y apertura automática del mismo. 
-* Con la distribución se agregan los formatos para interpretar los archivos de
+* Poder exportar a un archivo determinado y apertura automÃ¡tica del mismo. 
+* Con la distribuciÃ³n se agregan los formatos para interpretar los archivos de
   texto para el Siap / Afip:
-	* **ARCIBA**: débitos y créditos
-	* **RG3685**: Compras: comprobantes y alícuotas, Ventas: comprobantes y
+	* **ARCIBA**: dÃ©bitos y crÃ©ditos
+	* **RG3685**: Compras: comprobantes y alÃ­cuotas, Ventas: comprobantes y
 	  alicuotas
 	* **SIFERE**: Retenciones y percepciones
 	* **SICORE**: Retenciones y percepciones
-	* **IIBB**: Padrones de alto riesgo y régimen general
+	* **IIBB**: Padrones de alto riesgo y rÃ©gimen general
 
 
-# Requerimientos e instalación:
+# Requerimientos e instalaciÃ³n:
 
 En Windows, nada en particular ya que se distribuye la herramienta "congelada"
 mediante **Pyinstaller**. Descargarla y copiarla en alguna carpeta del sistema,
-idealmente que esté apuntada al path.
+idealmente que estÃ© apuntada al path.
 
 * Para descargar y descomprimir **Parseit**, hacer click
   [aqui](https://github.com/pmoracho/parseit/blob/master/dist/parseit-20161011.zip)
@@ -168,7 +168,7 @@ idealmente que esté apuntada al path.
 
 # Ejemplos de Uso:
 
-## Invocación sin parámetros o con `--help
+## InvocaciÃ³n sin parÃ¡metros o con `--help
 
 ```
 
@@ -190,20 +190,20 @@ argumentos opcionales:
                                    Definir path o archivo FMT a utilizar
   -u "formato", --useformat "formato"
                                    Forzar el uso de un determinado formato para porcesar el archivo
-  -t, --dontusetables              No usar traducción por tablas y mostrar los datos nativos
-  -s, --showformat                 Mostrar información de un formato (--format) en particular o todos los definidos
+  -t, --dontusetables              No usar traducciÃ³n por tablas y mostrar los datos nativos
+  -s, --showformat                 Mostrar informaciÃ³n de un formato (--format) en particular o todos los definidos
   -i, --ignorefmterror             Ignorar errores al cargar archivos de formatos
   -o "archivo", --outputfile "archivo"
                                    Exportar a un archivo
-  -x, --openfile                   abrir automáticamente el archivo
+  -x, --openfile                   abrir automÃ¡ticamente el archivo
   -e "formato", --exportformat "formato"
-                                   Exportar en un formato específico
+                                   Exportar en un formato especÃ­fico
   -c "columnas", --showcols "columnas"
-                                   Números de las columnas a mostrar
-  -r "filas", --showrows "filas"   Números de las filas a mostrar
-  -n, --dontshowrecordnumber       No mostrar los números de cada registro
-  -z, --horizontalmode             Modo de visualización horizontal
-  -a, --addtotals                  Agregar una última fila con los totales de los campos númericos
+                                   NÃºmeros de las columnas a mostrar
+  -r "filas", --showrows "filas"   NÃºmeros de las filas a mostrar
+  -n, --dontshowrecordnumber       No mostrar los nÃºmeros de cada registro
+  -z, --horizontalmode             Modo de visualizaciÃ³n horizontal
+  -a, --addtotals                  Agregar una Ãºltima fila con los totales de los campos nÃºmericos
   -l "archivo css", --css-file "archivo css"
                                    Archivo de estilos (.Css) para la salida Html
 
@@ -225,7 +225,7 @@ Filtra los registros 4 al 9 y el 12, y muestra las columnas 1 a 10 y la 13
 
 ```
 +----------+---------------+---------------+---------------+-------------+--------------+--------------+------------------+--------------+-------------+-----------------------------------+
-|   # Reg. | Fecha Publ.   | Fecha Desde   | Fecha Hasta   |        CUIT | Tipo         | Marca Alta   | Marca Alícuota   |   Percepción |   Retención | Razón Social                      |
+|   # Reg. | Fecha Publ.   | Fecha Desde   | Fecha Hasta   |        CUIT | Tipo         | Marca Alta   | Marca AlÃ­cuota   |   PercepciÃ³n |   RetenciÃ³n | RazÃ³n Social                      |
 |----------+---------------+---------------+---------------+-------------+--------------+--------------+------------------+--------------+-------------+-----------------------------------|
 |        4 | 27-06-2016    | 01-11-2016    | 30-11-2016    | 20044290775 | D - Directo  | S            | N                |         1.50 |        1.50 | LADEDA HORACIO JOSE               |
 |        5 | 23-09-2016    | 01-10-2016    | 31-12-2016    | 20004226039 | C - Convenio | S            | N                |         6.00 |        4.50 | MIGUENS JOSE ENRIQUE C            |
@@ -253,12 +253,12 @@ Muestra solo los registros 4 y 11 y los muestra en le modo horizontal.
 |                CUIT | 20044290775         |
 |                Tipo | D - Directo         |
 |          Marca Alta | S                   |
-|      Marca Alícuota | N                   |
-|          Percepción | 1.5                 |
-|           Retención | 1.5                 |
+|      Marca AlÃ­cuota | N                   |
+|          PercepciÃ³n | 1.5                 |
+|           RetenciÃ³n | 1.5                 |
 |       Grupo Percep. | 16                  |
-|    Grupo Retención. | 16                  |
-|        Razón Social | LADEDA HORACIO JOSE |
+|    Grupo RetenciÃ³n. | 16                  |
+|        RazÃ³n Social | LADEDA HORACIO JOSE |
 | ------------------- | ------------------- |
 |              # Reg. | 11                  |
 |         Fecha Publ. | 23-09-2016          |
@@ -267,12 +267,12 @@ Muestra solo los registros 4 y 11 y los muestra en le modo horizontal.
 |                CUIT | 20004242042         |
 |                Tipo | D - Directo         |
 |          Marca Alta | S                   |
-|      Marca Alícuota | N                   |
-|          Percepción | 6.0                 |
-|           Retención | 4.5                 |
+|      Marca AlÃ­cuota | N                   |
+|          PercepciÃ³n | 6.0                 |
+|           RetenciÃ³n | 4.5                 |
 |       Grupo Percep. | 00                  |
-|    Grupo Retención. | 00                  |
-|        Razón Social | PEQA JUAN CARLOS    |
+|    Grupo RetenciÃ³n. | 00                  |
+|        RazÃ³n Social | PEQA JUAN CARLOS    |
 | ------------------- | ------------------- |
 +---------------------+---------------------+
 ```
@@ -282,7 +282,7 @@ Muestra solo los registros 4 y 11 y los muestra en le modo horizontal.
 Muestra solo los registros 4 y 11 y los exporta en la forma tradicional CSV, por ejemplo para importar a un Excel.
 
 ```
-"# Reg.";"Fecha Publ.";"Fecha Desde";"Fecha Hasta";"CUIT";"Tipo";"Marca Alta";"Marca Alícuota";"Percepción";"Retención";"Grupo Percep.";"Grupo Retención.";"Razón Social"
+"# Reg.";"Fecha Publ.";"Fecha Desde";"Fecha Hasta";"CUIT";"Tipo";"Marca Alta";"Marca AlÃ­cuota";"PercepciÃ³n";"RetenciÃ³n";"Grupo Percep.";"Grupo RetenciÃ³n.";"RazÃ³n Social"
 "4";"27-06-2016";"01-11-2016";"30-11-2016";"20044290775";"D - Directo";"S";"N";"    1.50";"    1.50";"16";"16";"LADEDA HORACIO JOSE"
 "11";"23-09-2016";"01-10-2016";"31-12-2016";"20004242042";"D - Directo";"S";"N";"    6.00";"    4.50";"00";"00";"PEQA JUAN CARLOS"
 ```
@@ -360,9 +360,9 @@ Generar una salida html de los registros 4 y 11
 
 ## `parseit sample/padron.txt  -e html -o salida.html -x`
 
-Exportar a html directo al archivo `salida.html` y abrirlo automáticamente con el navegador asociado
+Exportar a html directo al archivo `salida.html` y abrirlo automÃ¡ticamente con el navegador asociado
 
-![Captura de pantalla de un Chrome](doc/images/export-html.png?raw=true)
+![Captura de pantalla de un Chrome](https://github.com/pmoracho/parseit/raw/master/doc/images/export-html.png)
 
 
 # Notas para el desarrollador:
@@ -370,21 +370,21 @@ Exportar a html directo al archivo `salida.html` y abrirlo automáticamente con e
 ## Requisitos iniciales
 
 El proyecto **parseit** esta construido usando el lenguaje **python**, a la
-fecha no se usan librerías adicionales a las propias de python, pero de todas
+fecha no se usan librerÃ­as adicionales a las propias de python, pero de todas
 formas es recomendable preparar antes que nada, un entorno de desarrollo. A
-continuación expondremos en detalle cuales son los pasos para tener preparado
-el entorno de desarrollo. Este detalle esta orientado a la implementación sobre
+continuaciÃ³n expondremos en detalle cuales son los pasos para tener preparado
+el entorno de desarrollo. Este detalle esta orientado a la implementaciÃ³n sobre
 Windows 32 bits, los pasos para versiones de 64 bits son sustancialmente
 distintos, en particular por algunos de los "paquetes" que se construyen a
-partir de módulos en C o C++, de igual forma la instalación sobre Linux tiene
+partir de mÃ³dulos en C o C++, de igual forma la instalaciÃ³n sobre Linux tiene
 sus grandes diferencias. Eventualmente profundizaremos sobre estos entornos,
-pero en principio volvemos a señalar que el siguiente detalle aplica a los
+pero en principio volvemos a seÃ±alar que el siguiente detalle aplica a los
 ambientes Windows de 32 bits:
 
 * Obviamente en primer lugar necesitaremos
   [Python](https://www.python.org/ftp/python/3.4.0/python-3.4.0.msi), por ahora
-  únicamente la versión 3.4. La correcta instalación se debe verificar desde la
-  línea de comandos: `python --version`. Si todo se instaló correctamente se
+  Ãºnicamente la versiÃ³n 3.4. La correcta instalaciÃ³n se debe verificar desde la
+  lÃ­nea de comandos: `python --version`. Si todo se instalÃ³ correctamente se
   debe ver algo como esto `Python 3.4.0`, sino verificar que Python.exe se
   encuentre correctamente apuntado en el PATH.
 
@@ -392,20 +392,20 @@ ambientes Windows de 32 bits:
   `python -m pip install --upgrade pip`
 
 * [Virutalenv](https://virtualenv.pypa.io/en/stable/). Es la herramienta
-  estándar para crear entornos "aislados" de python. Para no tener conflictos
+  estÃ¡ndar para crear entornos "aislados" de python. Para no tener conflictos
   de desarrollo lo que haremos mediante esta herramienta es crear un "entorno
   virtual" de python en una carpeta del proyecto (venv). Este "entorno virtual"
-  contendrá una copia completa de Python, al activarlo se modifica el PATH al
-  python.exe que apuntará ahora a nuestra carpeta del entorno, evitando
+  contendrÃ¡ una copia completa de Python, al activarlo se modifica el PATH al
+  python.exe que apuntarÃ¡ ahora a nuestra carpeta del entorno, evitando
   cualquier tipo de conflicto con un entorno Python ya existente. La
-  instalación de virtualenv se hara mediante `pip install virtualenv`
+  instalaciÃ³n de virtualenv se hara mediante `pip install virtualenv`
 
 * Descargar el proyecto desde [Github](https://github.com/pmoracho/parseit), se
-  puede descargar desde la página el proyecto como un archivo Zip, o si
+  puede descargar desde la pÃ¡gina el proyecto como un archivo Zip, o si
   contamos con [Git](https://git-for-windows.github.io/) sencillamente haremos
   un `git clone https://github.com/pmoracho/parseit`.
 
-* El proyecto una vez descomprimido o luego del clonado del repositorio tendrá
+* El proyecto una vez descomprimido o luego del clonado del repositorio tendrÃ¡
   una estructura de directorios similar a la siguiente:
 
 ```
@@ -415,29 +415,29 @@ parseit.git
    |-tools
 ```
 
-## Preparación del entorno virtual local
+## PreparaciÃ³n del entorno virtual local
 
-Para poder ejecutar, o crear la distribución de la herramientas, lo primero que
+Para poder ejecutar, o crear la distribuciÃ³n de la herramientas, lo primero que
 deberemos hacer es armar un entorno python "virtual" que alojaremos en una
 subcarpeta del directorio principal que llamaremos "venv". En el proyecto
-incorporamos una herramienta de automatización de algunas tareas básicas. Se
+incorporamos una herramienta de automatizaciÃ³n de algunas tareas bÃ¡sicas. Se
 trata de `make.py`, la forma de ejecutarlo es la siguiente: `python
-tools\make.py <comando>` la ejecución si parámetros o mediante el parámetro
-`--help` arrojará una salida como lo que sigue:
+tools\make.py <comando>` la ejecuciÃ³n si parÃ¡metros o mediante el parÃ¡metro
+`--help` arrojarÃ¡ una salida como lo que sigue:
 
 ```
-Automatización de tareas para el proyecto Paresit
+AutomatizaciÃ³n de tareas para el proyecto Paresit
 (c) 2016, Patricio Moracho <pmoracho@gmail.com>
 
 Uso: make <command> [<args>]
 
-Los comandos más usados:
-   devcheck   Hace una verificación del entorno de desarrollo
-   devinstall Realiza la instalación del entorno de desarrollo virtual e instala los requerimientos
-   docinstall Intalación de Sphinx
+Los comandos mÃ¡s usados:
+   devcheck   Hace una verificaciÃ³n del entorno de desarrollo
+   devinstall Realiza la instalaciÃ³n del entorno de desarrollo virtual e instala los requerimientos
+   docinstall IntalaciÃ³n de Sphinx
    clear      Elimina archivos innecesarios
    test       Ejecuta todos los tests definidos del proyecto
-   build      Construye la distribución binaria de las herramientas del proyecto
+   build      Construye la distribuciÃ³n binaria de las herramientas del proyecto
 
 argumentos posicionales:
   command     Comando a ejecutar
@@ -447,10 +447,10 @@ argumentos opcionales:
 ```
 
 Para preparar el entorno virtual simplemente haremos `python tools\make.py
-devinstall`, este proceso si resulta exitoso deberá haber realizado las
+devinstall`, este proceso si resulta exitoso deberÃ¡ haber realizado las
 siguientes tareas:
 
-* Creación de un entorno pyhton virtual en la carpeta "venv", invocable
+* CreaciÃ³n de un entorno pyhton virtual en la carpeta "venv", invocable
   mediante `venv\Scripts\activate.bat` en Windows o `source
   venv/Scripts/activate` en entornos Linux o Cygwin/Mingw (en Windows)
 * Instalado todas las dependencias necesarias
@@ -458,9 +458,9 @@ siguientes tareas:
 
 ## Notas adicionales:
 
-* Es recomendable y cómodo, pero entiendo que no es mandatorio, contar con un
+* Es recomendable y cÃ³modo, pero entiendo que no es mandatorio, contar con un
   entorno estilo "Linux", por ejemplo [MinGW](http://www.mingw.org/), tal como
-  dice la página del proyecto: "MinGW provides a complete Open Source
+  dice la pÃ¡gina del proyecto: "MinGW provides a complete Open Source
   programming tool set which is suitable for the development of native
   MS-Windows applications, and which do not depend on any 3rd-party C-Runtime
   DLLs. (It does depend on a number of DLLs provided by Microsoft themselves,
@@ -468,21 +468,21 @@ siguientes tareas:
   MSVCRT.DLL, the Microsoft C runtime library. Additionally, threaded
   applications must ship with a freely distributable thread support DLL,
   provided as part of MinGW itself)." De este entorno requerimos algunas
-  herramientas de desarrollo: Bash para la línea de comandos y Make para la
-  automatización de varias tareas del proyecto. 
+  herramientas de desarrollo: Bash para la lÃ­nea de comandos y Make para la
+  automatizaciÃ³n de varias tareas del proyecto. 
 
 * Usar "soft tabs": Con cualquier editor que usemos configurar el uso del <tab>
   en vez de los espacios, yo prefiero el <tab> puro al espacio, entiendo que es
-  válido el otro criterio pero ya los fuentes están con esta configuración, por
+  vÃ¡lido el otro criterio pero ya los fuentes estÃ¡n con esta configuraciÃ³n, por
   lo que para evitar problemas al compilar los .py recomiendo seguir usando
   este criterio. Asimismo configurar en 4 posiciones estos <tab>.
 
 
 ## Formatos
-+ Los formatos se definen en uno o más archivos .FMT que no son más que
++ Los formatos se definen en uno o mÃ¡s archivos .FMT que no son mÃ¡s que
   archivos [JSON](http://www.json.org/)
 + [JSON Editor Online](http://www.jsoneditoronline.org/) Para validar la
-  edición del archivo de formatos
+  ediciÃ³n del archivo de formatos
 
 # Changelog:
 
@@ -496,4 +496,4 @@ siguientes tareas:
 * Se distribuyen varios formatos para interpretar archivos de Afip / Siap
 
 #### Version 0.1
-* Versión inicial
+* VersiÃ³n inicial
