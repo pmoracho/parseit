@@ -286,7 +286,7 @@ los exporta en la forma tradicional CSV, por ejemplo para importar a un Excel.
 "11";"23-09-2016";"01-10-2016";"31-12-2016";"20004242042";"D - Directo";"S";"N";"    6.00";"    4.50";"00";"00";"PEQA JUAN CARLOS"
 ```
 
-### **`parseit.py sample/padron.txt -r 4,11 -e html`
+### **`parseit.py sample/padron.txt -r 4,11 -e html`** Generar una salida html
 
 ```html
 <!doctype html>
