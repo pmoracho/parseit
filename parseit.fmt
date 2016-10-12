@@ -205,7 +205,7 @@
 				"Fecha Desde" :                 				[8, "date", "%d%m%Y", "%d-%m-%Y"],
 				"Fecha Hasta" :                 				[8, "date", "%d%m%Y", "%d-%m-%Y"],
 				"CUIT" :  				               			[11, "string", "", ""],
-				"Tipo" :  				               			[1, "string", "", ""],
+				"Tipo" :  				               			[1, "table", "iibb-tipo-inscrip", ""],
 				"Marca Alta" :  				       			[1, "string", "", ""],
 				"Marca Alícuota" :  				   			[1, "string", "", ""],
 				"Percepción" :           		    			[4, "amount", "", ""],
@@ -586,6 +586,10 @@
 		"23":	"Santa Cruz",
 		"24":	"Tierra del Fuego",
 		"99":	"No se informa Provincia(*)"
+	},
+	"iibb-tipo-inscrip": {
+		"D": 	"Directo",
+		"C": 	"Convenio"
 	}
 	}
 }
