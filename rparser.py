@@ -241,6 +241,7 @@ class Parser(object):
 		return self._formatos_posibles
 
 	def parseit_as(self, format_name):
+
 		self._parseformat		= self._formats.get(format_name,None)
 		self._parseformatname	= format_name
 
@@ -248,18 +249,16 @@ class Parser(object):
 			raise Exception('el formato: {0} no existe o no ha sido definido completamente. Revise el/los archivo/s *.fmt.'.format(format_name))
 
 		if self._parseformat.get("delimiter") == "":
-			 self.parseit_fixed_as(format_name)
+			 self.parseit_fixed()
 		else:
-			 self.parseit_csv_as(format_name)
+			 self.parseit_csv()
 
-	def parseit_csv_as(self, format_name):
-
-		self._parseformat		= self._formats.get(format_name,None)
-		self._parseformatname	= format_name
+	def parseit_csv(self):
 
 		tablas_fmt	= self._tablas
 		estructura	= self._parseformat.get("struct")
 		fields		= self._parseformat.get("fields")
+
 		amounts = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "amount"}
 		zamounts = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "zamount"}
 		dates = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "date"}
@@ -319,11 +318,7 @@ class Parser(object):
 			fields.clear()
 			fields.update(new_fields)
 
-
-	def parseit_fixed_as(self, format_name):
-
-		self._parseformat		= self._formats.get(format_name,None)
-		self._parseformatname	= format_name
+	def parseit_fixed(self):
 
 		tablas_fmt	= self._tablas
 		estructura	= self._parseformat.get("struct")
