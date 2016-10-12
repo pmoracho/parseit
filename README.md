@@ -168,7 +168,7 @@ idealmente que esté apuntada al path.
 
 # Ejemplos de Uso:
 
-## Invocación sin parámetros o con `--help
+1. Invocación sin parámetros o con **`--help**
 
 ```
 
@@ -219,10 +219,8 @@ Ejemplos de uso:
   parseit -h  
 ```
 
-## Filtrar filas y columnas
-
-### **`parseit sample/padron.txt -r 4-9,12 -c 1-10,13`** Filtra los registros 4 al
-9 y el 12, y muestra las columnas 1 a 10 y la 13 
+2. **`parseit sample/padron.txt -r 4-9,12 -c 1-10,13`** Filtra los registros 4
+   al 9 y el 12, y muestra las columnas 1 a 10 y la 13 
 
 ```
 +----------+---------------+---------------+---------------+-------------+--------------+--------------+------------------+--------------+-------------+-----------------------------------+
@@ -239,8 +237,8 @@ Ejemplos de uso:
 
 ```
 
-### **`parseit sample/padron.txt -r 4,11 -z`** Muestra solo los registros 4 y 11 y
-los muestra en le modo horizontal.
+3. **`parseit sample/padron.txt -r 4,11 -z`** Muestra solo los registros 4 y 11
+   y los muestra en le modo horizontal.
 
 ```
 +---------------------+---------------------+
@@ -277,8 +275,9 @@ los muestra en le modo horizontal.
 +---------------------+---------------------+
 ```
 
-### **`parseit sample/padron.txt -r 4,11 -e csv`** Muestra solo los registros 4 y 11 y
-los exporta en la forma tradicional CSV, por ejemplo para importar a un Excel.
+4. **`parseit sample/padron.txt -r 4,11 -e csv`** Muestra solo los registros 4
+   y 11 y los exporta en la forma tradicional CSV, por ejemplo para importar a
+   un Excel.
 
 ```
 "# Reg.";"Fecha Publ.";"Fecha Desde";"Fecha Hasta";"CUIT";"Tipo";"Marca Alta";"Marca Alícuota";"Percepción";"Retención";"Grupo Percep.";"Grupo Retención.";"Razón Social"
@@ -286,7 +285,8 @@ los exporta en la forma tradicional CSV, por ejemplo para importar a un Excel.
 "11";"23-09-2016";"01-10-2016";"31-12-2016";"20004242042";"D - Directo";"S";"N";"    6.00";"    4.50";"00";"00";"PEQA JUAN CARLOS"
 ```
 
-### **`parseit sample/padron.txt -r 4,11 -e html`** Generar una salida html
+5. **`parseit sample/padron.txt -r 4,11 -e html`** Generar una salida html de
+   los registrs 4 y 11
 
 ```html
 <!doctype html>
@@ -355,7 +355,8 @@ los exporta en la forma tradicional CSV, por ejemplo para importar a un Excel.
 </html>
 ```
 
-### **`parseit sample/padron.txt  -e html -o salida.html -x`** Exportar html directo al archivo `salida.html` y abrirlo automáticamente
+6. **`parseit sample/padron.txt  -e html -o salida.html -x`** Exportar html
+   directo al archivo `salida.html` y abrirlo automáticamente
 
 ![Captura de pantalla de un Chrome](doc/images/export-html.png?raw=true)
 
