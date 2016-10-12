@@ -357,7 +357,7 @@ los exporta en la forma tradicional CSV, por ejemplo para importar a un Excel.
 
 ### **`parseit sample/padron.txt  -e html -o salida.html -x`** Exportar html directo al archivo `salida.html` y abrirlo automáticamente
 
-![Captura de pantalla de un Chrome](doc/images/table 1-1.png?raw=true)
+![Captura de pantalla de un Chrome](doc/images/export-html.png?raw=true)
 
 
 # Notas para el desarrollador:
