@@ -387,6 +387,8 @@ class Parser(object):
 				if texto_filtro:
 					if [k for k in r if texto_filtro.lower() in str(k).lower()]:
 						data_filtered.append([r[c-1] for c in campos_a_mostrar])
+				else:
+					data_filtered.append([r[c-1] for c in campos_a_mostrar])
 
 		return data_filtered
 
