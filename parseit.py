@@ -104,6 +104,7 @@ def init_argparse():
 	cmdparser.add_argument('-z', '--horizontalmode'			, action="store_true", dest="horizontalmode", help="Modo de visualización horizontal")
 	cmdparser.add_argument('-a', '--addtotals'			    , action="store_true", dest="addtotals", help="Agregar una última fila con los totales de los campos númericos")
 	cmdparser.add_argument('-l', '--css-file'			    , action="store", dest="cssfile", help="Archivo de estilos (.Css) para la salida Html", metavar="\"archivo css\"")
+	cmdparser.add_argument('-b', '--search-text', type=str 	, action="store", dest="searchtext", help="Búsqueda y filtrado de texto", metavar="\"Texto a buscar\"")
 
 	return cmdparser
 
@@ -137,11 +138,9 @@ def expand_filename(filename):
 
 	return filename
 
-"""
 ##################################################################################################################################################
 # Main program
 ##################################################################################################################################################
-"""
 if __name__ == "__main__":
 
 	cmdparser = init_argparse()
@@ -212,6 +211,7 @@ if __name__ == "__main__":
 			parser.addtotals		= args.addtotals
 			parser.cssfile			= args.cssfile
 			parser.openfile         = args.openfile
+			parser.searchtext       = args.searchtext
 
 			if args.outputfile:
 				parser.outputfile	= expand_filename(args.outputfile)

@@ -19,11 +19,10 @@
 """
 	TO DO:
 		+ Agregar exportación a Excel vía xlswriter
-		+ Agregar injectado de css para html por parametro
 		+ Problemas con FMT erroneos, no colgar y mostrar el error
-		+ Proceso de archivos CSV con registros a "skipear"
 		+ Mejorar la clase
 		+ Agregar otros atributos para la identificación de archivos, por ejem. el nombre
+		+ Busqueda de registros
 		+ OK. Agregar totales a la salida
 		+ Ok. Mejorar e investigar el tema de los codecs. Unificar operaciones de lectura de archivo
 		+ Ok. Armar funcionalidad para listar formatos uno o todos
@@ -34,6 +33,8 @@
 		+ Ok. Exportar a un archivo expecífico
 		+ Ok. abrir el archivo automáticamente al finalizar
 		+ Ok. Agregar variables al outputfile {tmp}, {desktop}, {rndfilename}
+		+ Ok. Agregar injectado de css para html por parametro
+		+ Ok. Proceso de archivos CSV
 
 """
 __author__		= "Patricio Moracho <pmoracho@gmail.com>"
@@ -91,6 +92,8 @@ class Parser(object):
 		self.openfile			= False
 		self.outputfile			= None
 		self.cssfile			= None
+		self.searchtext			= None
+
 		self._load_fmt_files(ignorefmterror)
 		self._add_format_info()
 
@@ -248,14 +251,6 @@ class Parser(object):
 		if self._parseformat is None:
 			raise Exception('el formato: {0} no existe o no ha sido definido completamente. Revise el/los archivo/s *.fmt.'.format(format_name))
 
-		if self._parseformat.get("delimiter") == "":
-			 self.parseit_fixed()
-		else:
-			 self.parseit_csv()
-
-	def parseit_csv(self):
-
-		tablas_fmt	= self._tablas
 		estructura	= self._parseformat.get("struct")
 		fields		= self._parseformat.get("fields")
 
@@ -267,49 +262,27 @@ class Parser(object):
 			tablas = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "table"}
 
 		delimiter = self._parseformat.get("delimiter", 0)
-		fieldcount = self._parseformat.get("fieldcount",0)
+		# fieldcount = self._parseformat.get("fieldcount", 0)
 
-		with open(self._parsefile) as csvfile:
-			reader = csv.reader(csvfile, delimiter=delimiter, quoting=csv.QUOTE_NONE)
+		if self._parseformat.get("delimiter","") == "":
+			# Proceamiento de archivosde longitud fija
+			with codecs.open(self._parsefile, 'r', encoding=self._inputfile_encoding) as f:
+				for i, l in enumerate(f.readlines(), 1):
+					# Parseo la linea y la combierto en un lista plana
+					b = struct.unpack(estructura, l.strip().encode('iso-8859-1'))
+					campos = [c.decode('iso-8859-1') for c in b]
+					self._proc_row(i, estructura, amounts, dates, zamounts, tablas, campos)
+		else:
+			# Procesamiento de archivos con delimitador de campos
+			with open(self._parsefile) as csvfile:
+				reader = csv.reader(csvfile, delimiter=delimiter, quoting=csv.QUOTE_NONE)
+				for i, row in enumerate(reader,1):
+					campos = [c for c in row]
+					self._proc_row(i, estructura, amounts, dates, zamounts, tablas, campos)
 
-			for i, row in enumerate(reader,1):
-				c = [c for c in row]
-
-				# Conversión a datos nativos para montos
-				for k, v in amounts.items():
-					c[k] = float(c[k].replace(",", "."))
-
-				# Conversión a datos nativos para fechas
-				for k, v in dates.items():
-					if c[k].strip() != '':
-						c[k] = datetime.strptime(c[k], v[2]).strftime(v[3])
-
-				# Conversión a datos nativos para montos zero paded
-				for k, v in zamounts.items():
-					decimals = int(v[2])
-					c[k] = float(c[k][:len(c[k])-decimals] + "." + c[k][-decimals:])
-
-				# Reemplazo los valores de tabla
-				if not self.dontusetables:
-					try:
-						for k, v in tablas.items():
-							t = tablas_fmt.get(v[2])
-							try:
-								c[k] = "{0} - {1}".format(c[k], t[c[k]])
-							except KeyError:
-								c[k] = "{0} - {1}".format(c[k], "!!!error")
-
-					except Exception:
-						raise Exception('Error al al intentar procesar la tabla: {}'.format(v[2]))
-
-				if self.addrecordnum:
-					c = [i] + c
-
-				self._records.append(c)
-
-		# ======================
-		# Arego un # de registro
-		# ======================
+		# ===============================
+		# Arego un # de registro (titulo)
+		# ===============================
 		if self.addrecordnum:
 			new_fields = fields.__class__()
 			new_fields["# Reg."] = [8, "string", "", ""]
@@ -318,67 +291,40 @@ class Parser(object):
 			fields.clear()
 			fields.update(new_fields)
 
-	def parseit_fixed(self):
+	def _proc_row(self, i, estructura, amounts, dates, zamounts, tablas, campos):
 
-		tablas_fmt	= self._tablas
-		estructura	= self._parseformat.get("struct")
-		fields		= self._parseformat.get("fields")
-		amounts = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "amount"}
-		zamounts = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "zamount"}
-		dates = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "date"}
+			# Conversión a datos nativos para montos
+			for k, v in amounts.items():
+				campos[k] = float(campos[k].replace(",", "."))
 
-		if not self.dontusetables:
-			tablas = {i: v for i, (k, v) in enumerate(fields.items()) if v[1] == "table"}
+			# Conversión a datos nativos para fechas
+			for k, v in dates.items():
+				if campos[k].strip() != '':
+					campos[k] = datetime.strptime(campos[k], v[2]).strftime(v[3])
 
-		with codecs.open(self._parsefile, 'r', encoding=self._inputfile_encoding) as f:
-			for i, l in enumerate(f.readlines(), 1):
+			# Conversión a datos nativos para montos "zero paded"
+			for k, v in zamounts.items():
+				decimals = int(v[2])
+				campos[k] = float(campos[k][:len(campos[k])-decimals] + "." + campos[k][-decimals:])
 
-				# Parseo la linea y la combierto en un lista plana
-				b = struct.unpack(estructura, l.strip().encode('iso-8859-1'))
-				c = [c.decode('iso-8859-1') for c in b]
+			# Reemplazo los valores de tabla
+			if not self.dontusetables:
+				try:
+					for k, v in tablas.items():
+						t = self._tablas.get(v[2])
+						try:
+							campos[k] = "{0} - {1}".format(campos[k], t[campos[k]])
+						except KeyError:
+							campos[k] = "{0} - {1}".format(campos[k], "!!!error")
 
-				# Conversión a datos nativos para montos
-				for k, v in amounts.items():
-					c[k] = float(c[k].replace(",", "."))
+				except Exception:
+					raise Exception('Error al al intentar procesar la tabla: {}'.format(v[2]))
 
-				# Conversión a datos nativos para fechas
-				for k, v in dates.items():
-					if c[k].strip() != '':
-						c[k] = datetime.strptime(c[k], v[2]).strftime(v[3])
+			if self.addrecordnum:
+				campos = [i] + campos
 
-				# Conversión a datos nativos para montos zero paded
-				for k, v in zamounts.items():
-					decimals = int(v[2])
-					c[k] = float(c[k][:len(c[k])-decimals] + "." + c[k][-decimals:])
+			self._records.append(campos)
 
-				# Reemplazo los valores de tabla
-				if not self.dontusetables:
-					try:
-						for k, v in tablas.items():
-							t = tablas_fmt.get(v[2])
-							try:
-								c[k] = "{0} - {1}".format(c[k], t[c[k]])
-							except KeyError:
-								c[k] = "{0} - {1}".format(c[k], "!!!error")
-
-					except Exception:
-						raise Exception('Error al al intentar procesar la tabla: {}'.format(v[2]))
-
-				if self.addrecordnum:
-					c = [i] + c
-
-				self._records.append(c)
-
-		# ======================
-		# Arego un # de registro
-		# ======================
-		if self.addrecordnum:
-			new_fields = fields.__class__()
-			new_fields["# Reg."] = [8, "string", "", ""]
-			for key, value in fields.items():
-				new_fields[key] = value
-			fields.clear()
-			fields.update(new_fields)
 
 	def showformats(self, nombre_formato):
 		"""
@@ -431,6 +377,20 @@ class Parser(object):
 		else:
 			print("No se encontró el formato \"{0}\"".format(nombre_formato))
 
+
+	def filter_data(self, data, filas_a_mostrar, campos_a_mostrar, texto_filtro):
+
+		data_filtered = []
+
+		for r in data:
+			if r[0] in filas_a_mostrar:
+				if texto_filtro:
+					if [k for k in r if texto_filtro.lower() in str(k).lower()]:
+						data_filtered.append([r[c-1] for c in campos_a_mostrar])
+
+		return data_filtered
+
+
 	def export(self, export_format, showcols=None, showrows=None, horizontalmode=False):
 		"""
 		Exportación del archivo interpretado según	el format especificado
@@ -442,7 +402,6 @@ class Parser(object):
 			showrows		: (string) filas a mostrar
 			horizontalmode	: (bool) Display de la tabla en formato horizontal, las columnas se muestran como registros
 
-
 		"""
 
 		nombrecampos		= [k for k, v in self._parseformat.get("fields").items()]
@@ -452,28 +411,22 @@ class Parser(object):
 
 		if showrows:
 			filas_a_mostrar = self._str_to_list(showrows, len(self._records))
+		else:
+			filas_a_mostrar = [i for i in range(1, len(self._records))]
 
 		if showcols:
 			campos_a_mostrar = self._str_to_list(showcols, len(self._parseformat.get("fields")))
 		else:
 			campos_a_mostrar = [i for i, e in enumerate(self._parseformat.get("fields"), 1)]
 
-		registros = []
-		if filas_a_mostrar:
-			for r in self._records:
-				if r[0] in filas_a_mostrar:
-					registros.append([r[c-1] for c in campos_a_mostrar])
-		else:
-			if showcols:
-				for r in self._records:
-					registros.append([r[c-1] for c in campos_a_mostrar])
-			else:
-				registros = self._records
+
+		registros			= self.filter_data(self._records, filas_a_mostrar, campos_a_mostrar, self.searchtext)
 
 		real_rows			= len(registros)
 		header_row			= [nombrecampos[c-1] for c in campos_a_mostrar]
 		fields_props		= [propiedades[c-1] for c in campos_a_mostrar]
 		override_cols_fmt	= [p[3] if p[3] else None for p in fields_props]
+
 		# Sumarizar campos
 		if self.addtotals:
 			scampos = [i for i, c in enumerate(registros[0], 0) if (isinstance(c, int) or isinstance(c, float)) and i != 0]
