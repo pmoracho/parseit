@@ -23,8 +23,8 @@ __appname__		= "parseit"
 __appdesc__		= "Parseador de archivos"
 __license__		= 'GPL v3'
 __copyright__	= "2016, %s" % (__author__)
-__version__		= "1.1"
-__date__		= "2016/01/22 13:42:03"
+__version__		= "1.3"
+__date__		= "2016/10/17"
 
 """
 ###############################################################################

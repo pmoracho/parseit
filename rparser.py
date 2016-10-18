@@ -20,9 +20,9 @@
 	TO DO:
 		+ Agregar exportación a Excel vía xlswriter
 		+ Problemas con FMT erroneos, no colgar y mostrar el error
-		+ Mejorar la clase
+		+ Mejorar y documentar la clase
 		+ Agregar otros atributos para la identificación de archivos, por ejem. el nombre
-		+ Busqueda de registros
+		+ OK. Busqueda de registros
 		+ OK. Agregar totales a la salida
 		+ Ok. Mejorar e investigar el tema de los codecs. Unificar operaciones de lectura de archivo
 		+ Ok. Armar funcionalidad para listar formatos uno o todos
@@ -65,7 +65,7 @@ except ImportError as err:
 
 
 class Parser(object):
-	"""Parser es el motor principal para entender los archivos de registros de longitud fija.
+	"""Parser es el motor principal para entender los archivos de registros de longitud fija o csv.
 	"""
 	def __init__(self, loadfrom, ignorefmterror=False):
 		"""
@@ -128,7 +128,6 @@ class Parser(object):
 		"""Agrega longitudes a cada formato,
 		generación de la estructura para paseo.
 		"""
-
 		for k, f in self._formats.items():
 			ln = 0
 			s = ""
@@ -378,7 +377,7 @@ class Parser(object):
 			print("No se encontró el formato \"{0}\"".format(nombre_formato))
 
 
-	def filter_data(self, data, filas_a_mostrar, campos_a_mostrar, texto_filtro):
+	def _filter_data(self, data, filas_a_mostrar, campos_a_mostrar, texto_filtro):
 
 		data_filtered = []
 
@@ -422,7 +421,7 @@ class Parser(object):
 			campos_a_mostrar = [i for i, e in enumerate(self._parseformat.get("fields"), 1)]
 
 
-		registros			= self.filter_data(self._records, filas_a_mostrar, campos_a_mostrar, self.searchtext)
+		registros			= self._filter_data(self._records, filas_a_mostrar, campos_a_mostrar, self.searchtext)
 
 		real_rows			= len(registros)
 		header_row			= [nombrecampos[c-1] for c in campos_a_mostrar]

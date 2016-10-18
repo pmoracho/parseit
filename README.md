@@ -484,6 +484,9 @@ siguientes tareas:
 
 # Changelog:
 
+#### Version 1.3 - 2016-10-17
+* Primera funcionalidad para la busqueda de registros por texto
+
 #### Version 1.2 - 2016-10-11
 * Primera funcionalidad para el manejo de archivos CSV (separado por
   delimitador)
