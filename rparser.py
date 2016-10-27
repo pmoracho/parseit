@@ -212,21 +212,21 @@ class Parser(object):
 		rln = len(f.splitlines()[0])
 
 		# Solo los registros de lóngitud fija
-		for k, f in [ (k,self._formats[k]) for k in self._formats if self._formats[k].get("delimiter", "") == ""]:
+		for k, f in [(k, self._formats[k]) for k in self._formats if self._formats[k].get("delimiter", "") == ""]:
 			l = f.get("length", 0)
 			if l != 0:
 				if rln == l:
 					self._formatos_posibles.append(k)
 
 		# Solo los registros con delimitador de campos
-		for k, f in [ (k,self._formats[k]) for k in self._formats if self._formats[k].get("delimiter", "") != ""]:
+		for k, f in [(k, self._formats[k]) for k in self._formats if self._formats[k].get("delimiter", "") != ""]:
 			delimiter = f.get("delimiter", 0)
-			fieldcount = f.get("fieldcount",0)
+			fieldcount = f.get("fieldcount", 0)
 
 			notvalid = False
 			with open(self._parsefile) as csvfile:
 				reader = csv.reader(csvfile, delimiter=delimiter, quoting=csv.QUOTE_NONE)
-				for i, row in enumerate(reader,1):
+				for i, row in enumerate(reader, 1):
 					if len(row) != fieldcount:
 						notvalid = True
 						break
@@ -244,7 +244,7 @@ class Parser(object):
 
 	def parseit_as(self, format_name):
 
-		self._parseformat		= self._formats.get(format_name,None)
+		self._parseformat		= self._formats.get(format_name, None)
 		self._parseformatname	= format_name
 
 		if self._parseformat is None:
@@ -263,7 +263,7 @@ class Parser(object):
 		delimiter = self._parseformat.get("delimiter", 0)
 		# fieldcount = self._parseformat.get("fieldcount", 0)
 
-		if self._parseformat.get("delimiter","") == "":
+		if self._parseformat.get("delimiter", "") == "":
 			# Proceamiento de archivosde longitud fija
 			with codecs.open(self._parsefile, 'r', encoding=self._inputfile_encoding) as f:
 				for i, l in enumerate(f.readlines(), 1):
@@ -275,7 +275,7 @@ class Parser(object):
 			# Procesamiento de archivos con delimitador de campos
 			with open(self._parsefile) as csvfile:
 				reader = csv.reader(csvfile, delimiter=delimiter, quoting=csv.QUOTE_NONE)
-				for i, row in enumerate(reader,1):
+				for i, row in enumerate(reader, 1):
 					campos = [c for c in row]
 					self._proc_row(i, estructura, amounts, dates, zamounts, tablas, campos)
 
@@ -324,10 +324,8 @@ class Parser(object):
 
 			self._records.append(campos)
 
-
 	def showformats(self, nombre_formato):
-		"""
-		Imprime en la salida extandar la documentación de uno o todos los formatos
+		"""Imprime en la salida extandar la documentación de uno o todos los formatos
 
 		Args:
 
@@ -376,7 +374,6 @@ class Parser(object):
 		else:
 			print("No se encontró el formato \"{0}\"".format(nombre_formato))
 
-
 	def _filter_data(self, data, filas_a_mostrar, campos_a_mostrar, texto_filtro):
 
 		data_filtered = []
@@ -390,7 +387,6 @@ class Parser(object):
 					data_filtered.append([r[c-1] for c in campos_a_mostrar])
 
 		return data_filtered
-
 
 	def export(self, export_format, showcols=None, showrows=None, horizontalmode=False):
 		"""
@@ -419,7 +415,6 @@ class Parser(object):
 			campos_a_mostrar = self._str_to_list(showcols, len(self._parseformat.get("fields")))
 		else:
 			campos_a_mostrar = [i for i, e in enumerate(self._parseformat.get("fields"), 1)]
-
 
 		registros			= self._filter_data(self._records, filas_a_mostrar, campos_a_mostrar, self.searchtext)
 
@@ -528,7 +523,7 @@ class Parser(object):
 			else:
 				css = css_default
 
-			title		=	'Archivo: {0} ({1})'.format(self._parsefile,self._parseformatname)
+			title		=	'Archivo: {0} ({1})'.format(self._parsefile, self._parseformatname)
 			cantrows	=	'Cantidad de registros visualizados: {0}'.format(real_rows)
 			tablestr	=	'<!doctype html>\n' \
 							'<html lang="en">\n' \
@@ -536,7 +531,7 @@ class Parser(object):
 							'<meta charset="utf-8">\n' \
 							'<meta name="description" content="' + __appname__ + ' - ' + __appdesc__ + '">\n' \
 							'<meta name="author" content="' + __copyright__ + '">\n' \
-							'<style type="text/css">\n{0}\n</style>\n<title>{1}</title>\n</head>\n<body>\n'.format(css,title) + \
+							'<style type="text/css">\n{0}\n</style>\n<title>{1}</title>\n</head>\n<body>\n'.format(css, title) + \
 							'<p><b>' + title + '</b></p>' + \
 							'<p>' + cantrows + '</p>' + \
 							'<p></br></p>' + \

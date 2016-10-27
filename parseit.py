@@ -32,8 +32,8 @@ __date__		= "2016/10/17"
 ###############################################################################
 """
 try:
-	import os
 	import sys
+	import os
 	import gettext
 	import tempfile
 	from rparser import Parser
@@ -87,24 +87,24 @@ def init_argparse():
 							usage=None
 	)
 
-	cmdparser.add_argument('inputfile'			, type=str, nargs='?', help="Archivo de input", metavar="\"archivo a interpretar\"")
+	cmdparser.add_argument('inputfile', 			type=str, nargs='?', help="Archivo de input", metavar="\"archivo a interpretar\"")
 
-	cmdparser.add_argument("-v", "--version"	    		, action='version', version=__version__)
-	cmdparser.add_argument('-f', '--format'		, type=str	, action="store", dest="formato", help="Definir path o archivo FMT a utilizar", metavar="\"path o archivo\"")
-	cmdparser.add_argument('-u', '--useformat'	, type=str	, action="store", dest="useformat", help="Forzar el uso de un determinado formato para porcesar el archivo", metavar="\"formato\"")
-	cmdparser.add_argument('-t', '--dontusetables'			, action="store_true", dest="dontusetables", help="No usar traducción por tablas y mostrar los datos nativos")
-	cmdparser.add_argument('-s', '--showformat'		    	, action="store_true", dest="showformat", help="Mostrar información de un formato (--format) en particular o todos los definidos")
-	cmdparser.add_argument('-i', '--ignorefmterror'			, action="store_true", dest="ignorefmterror", help="Ignorar errores al cargar archivos de formatos")
-	cmdparser.add_argument('-o', '--outputfile'			    , action="store", dest="outputfile", help="Exportar a un archivo", metavar="\"archivo\"")
-	cmdparser.add_argument('-x', '--openfile'			    , action="store_true", dest="openfile", help="abrir automáticamente el archivo")
-	cmdparser.add_argument('-e', '--exportformat'			, action="store", dest="exportformat", help="Exportar en un formato específico", metavar="\"formato\"", default="psql")
-	cmdparser.add_argument('-c', '--showcols', type=str		, action="store", dest="showcols", help=u"Números de las columnas a mostrar", metavar="\"columnas\"")
-	cmdparser.add_argument('-r', '--showrows', type=str		, action="store", dest="showrows", help=u"Números de las filas a mostrar", metavar="\"filas\"")
-	cmdparser.add_argument('-n', '--dontshowrecordnumber'	, action="store_false", dest="addrecordnumber", help="No mostrar los números de cada registro")
-	cmdparser.add_argument('-z', '--horizontalmode'			, action="store_true", dest="horizontalmode", help="Modo de visualización horizontal")
-	cmdparser.add_argument('-a', '--addtotals'			    , action="store_true", dest="addtotals", help="Agregar una última fila con los totales de los campos númericos")
-	cmdparser.add_argument('-l', '--css-file'			    , action="store", dest="cssfile", help="Archivo de estilos (.Css) para la salida Html", metavar="\"archivo css\"")
-	cmdparser.add_argument('-b', '--search-text', type=str 	, action="store", dest="searchtext", help="Búsqueda y filtrado de texto", metavar="\"Texto a buscar\"")
+	cmdparser.add_argument("-v", "--version", 					action='version', version=__version__)
+	cmdparser.add_argument('-f', '--format', 		type=str, 	action="store", dest="formato", help="Definir path o archivo FMT a utilizar", metavar="\"path o archivo\"")
+	cmdparser.add_argument('-u', '--useformat', 	type=str, 	action="store", dest="useformat", help="Forzar el uso de un determinado formato para porcesar el archivo", metavar="\"formato\"")
+	cmdparser.add_argument('-t', '--dontusetables', 			action="store_true", dest="dontusetables", help="No usar traducción por tablas y mostrar los datos nativos")
+	cmdparser.add_argument('-s', '--showformat', 				action="store_true", dest="showformat", help="Mostrar información de un formato (--format) en particular o todos los definidos")
+	cmdparser.add_argument('-i', '--ignorefmterror', 			action="store_true", dest="ignorefmterror", help="Ignorar errores al cargar archivos de formatos")
+	cmdparser.add_argument('-o', '--outputfile', 				action="store", dest="outputfile", help="Exportar a un archivo", metavar="\"archivo\"")
+	cmdparser.add_argument('-x', '--openfile', 					action="store_true", dest="openfile", help="abrir automáticamente el archivo")
+	cmdparser.add_argument('-e', '--exportformat', 				action="store", dest="exportformat", help="Exportar en un formato específico", metavar="\"formato\"", default="psql")
+	cmdparser.add_argument('-c', '--showcols', 		type=str, 	action="store", dest="showcols", help=u"Números de las columnas a mostrar", metavar="\"columnas\"")
+	cmdparser.add_argument('-r', '--showrows', 		type=str, 	action="store", dest="showrows", help=u"Números de las filas a mostrar", metavar="\"filas\"")
+	cmdparser.add_argument('-n', '--dontshowrecordnumber', 		action="store_false", dest="addrecordnumber", help="No mostrar los números de cada registro")
+	cmdparser.add_argument('-z', '--horizontalmode', 			action="store_true", dest="horizontalmode", help="Modo de visualización horizontal")
+	cmdparser.add_argument('-a', '--addtotals', 				action="store_true", dest="addtotals", help="Agregar una última fila con los totales de los campos númericos")
+	cmdparser.add_argument('-l', '--css-file', 					action="store", dest="cssfile", help="Archivo de estilos (.Css) para la salida Html", metavar="\"archivo css\"")
+	cmdparser.add_argument('-b', '--search-text', 	type=str, 	action="store", dest="searchtext", help="Búsqueda y filtrado de texto", metavar="\"Texto a buscar\"")
 
 	return cmdparser
 
@@ -210,8 +210,8 @@ if __name__ == "__main__":
 			parser.addrecordnumber	= args.addrecordnumber
 			parser.addtotals		= args.addtotals
 			parser.cssfile			= args.cssfile
-			parser.openfile         = args.openfile
-			parser.searchtext       = args.searchtext
+			parser.openfile			= args.openfile
+			parser.searchtext		= args.searchtext
 
 			if args.outputfile:
 				parser.outputfile	= expand_filename(args.outputfile)
