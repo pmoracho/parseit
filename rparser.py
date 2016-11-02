@@ -377,7 +377,6 @@ class Parser(object):
 	def _filter_data(self, data, filas_a_mostrar, campos_a_mostrar, texto_filtro):
 
 		data_filtered = []
-
 		for r in data:
 			if r[0] in filas_a_mostrar:
 				if texto_filtro:
@@ -400,7 +399,6 @@ class Parser(object):
 			horizontalmode	: (bool) Display de la tabla en formato horizontal, las columnas se muestran como registros
 
 		"""
-
 		nombrecampos		= [k for k, v in self._parseformat.get("fields").items()]
 		propiedades			= [v for k, v in self._parseformat.get("fields").items()]
 		campos_a_mostrar	= None
@@ -409,7 +407,7 @@ class Parser(object):
 		if showrows:
 			filas_a_mostrar = self._str_to_list(showrows, len(self._records))
 		else:
-			filas_a_mostrar = [i for i in range(1, len(self._records))]
+			filas_a_mostrar = [i for i in range(1, len(self._records)+1)]
 
 		if showcols:
 			campos_a_mostrar = self._str_to_list(showcols, len(self._parseformat.get("fields")))

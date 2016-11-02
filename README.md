@@ -1,6 +1,11 @@
 Parseit
 =======
 
+* [Página del proyecto](https://pmoracho.github.io/parseit)
+* [Proyecto en github](https://github.com/pmoracho/parseit)
+* [Descarga de ejecutable para windows](https://github.com/pmoracho/parseit/raw/master/dist/parseit-20161102.zip)
+
+
 `Parseit` es una herramienta de linea de comandos para "interpretar" archivos
 de texto con formato (Con o sin delimitador). 
 
@@ -483,6 +488,9 @@ siguientes tareas:
   edición del archivo de formatos
 
 # Changelog:
+
+#### Version 1.4 - 2016-11-02
+* Corrección de bug, estaba filtrando un registro del total
 
 #### Version 1.3 - 2016-10-17
 * Primera funcionalidad para la busqueda de registros por texto

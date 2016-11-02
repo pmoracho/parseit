@@ -30,6 +30,9 @@ __date__		= "2016/07/14"
 packages 		= {	"PyInstaller":	("3.1.1",	None) }
 manualtasks 	= []
 tools 			= ["parseit.py"]
+distfiles		= ["dist/parseit.exe",
+			  		"parseit.fmt"
+			  	]
 
 try:
 	import gettext
@@ -91,6 +94,7 @@ Los comandos más usados:
    clear      Elimina archivos innecesarios
    test	      Ejecuta todos los tests definidos del proyecto
    build      Construye la distribución binaria de las herramientas del proyecto
+   dist       Construye el zip para descargar la herramienta ejecutable
 
 ''' % (__appdesc__, __copyright__)
 		)
@@ -103,6 +107,11 @@ Los comandos más usados:
 			exit(1)
 		# use dispatch pattern to invoke method with same name
 		getattr(self, args.command)()
+
+	def dist(self):
+		self.parser = argparse.ArgumentParser( description='Construye el zip para descargar la herramienta ejecutable')
+		print("Running make dist")
+		self.dist()
 
 	def test(self):
 		self.parser = argparse.ArgumentParser(description='Ejecuta todos los tests del proyecto')
@@ -361,6 +370,8 @@ Los comandos más usados:
 		if self.check_virtualenv():
 			self.check_packages(packages)
 
+	def dist():
+		pass
 
 if __name__ == "__main__":
 	MyMake()
