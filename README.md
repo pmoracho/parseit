@@ -489,6 +489,9 @@ siguientes tareas:
 
 # Changelog:
 
+#### Version 1.4.1 - 2017-01-05
+* El tipo "amounts" permite procesar montos al estilo "0000-45.34"
+
 #### Version 1.4 - 2016-11-02
 * Corrección de bug, estaba filtrando un registro del total
 

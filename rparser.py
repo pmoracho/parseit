@@ -292,16 +292,18 @@ class Parser(object):
 
 	def _proc_row(self, i, estructura, amounts, dates, zamounts, tablas, campos):
 
-			# Conversión a datos nativos para montos
+			# Conversión a datos nativos para montos, se permiten ceros a
+			# izquierda
 			for k, v in amounts.items():
-				campos[k] = float(campos[k].replace(",", "."))
+				campos[k] = float(campos[k].replace(",", ".").lstrip("0"))
 
 			# Conversión a datos nativos para fechas
 			for k, v in dates.items():
 				if campos[k].strip() != '':
 					campos[k] = datetime.strptime(campos[k], v[2]).strftime(v[3])
 
-			# Conversión a datos nativos para montos "zero paded"
+			# Conversión a datos nativos para montos "zero paded" sin
+			# separadores de decimales
 			for k, v in zamounts.items():
 				decimals = int(v[2])
 				campos[k] = float(campos[k][:len(campos[k])-decimals] + "." + campos[k][-decimals:])
@@ -521,19 +523,19 @@ class Parser(object):
 			else:
 				css = css_default
 
-			title		=	'Archivo: {0} ({1})'.format(self._parsefile, self._parseformatname)
-			cantrows	=	'Cantidad de registros visualizados: {0}'.format(real_rows)
-			tablestr	=	'<!doctype html>\n' \
-							'<html lang="en">\n' \
-							'<head>\n' \
-							'<meta charset="utf-8">\n' \
-							'<meta name="description" content="' + __appname__ + ' - ' + __appdesc__ + '">\n' \
-							'<meta name="author" content="' + __copyright__ + '">\n' \
-							'<style type="text/css">\n{0}\n</style>\n<title>{1}</title>\n</head>\n<body>\n'.format(css, title) + \
-							'<p><b>' + title + '</b></p>' + \
-							'<p>' + cantrows + '</p>' + \
-							'<p></br></p>' + \
-							tablestr + '</body>\n</html>\n'
+			title		= 'Archivo: {0} ({1})'.format(self._parsefile, self._parseformatname)
+			cantrows	= 'Cantidad de registros visualizados: {0}'.format(real_rows)
+			tablestr	= '<!doctype html>\n' \
+						'<html lang="en">\n' \
+						'<head>\n' \
+						'<meta charset="utf-8">\n' \
+						'<meta name="description" content="' + __appname__ + ' - ' + __appdesc__ + '">\n' \
+						'<meta name="author" content="' + __copyright__ + '">\n' \
+						'<style type="text/css">\n{0}\n</style>\n<title>{1}</title>\n</head>\n<body>\n'.format(css, title) + \
+						'<p><b>' + title + '</b></p>' + \
+						'<p>' + cantrows + '</p>' + \
+						'<p></br></p>' + \
+						tablestr + '</body>\n</html>\n'
 
 		if self.outputfile:
 			with open(self.outputfile, "w") as out:
