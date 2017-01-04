@@ -1,6 +1,6 @@
 ---
 layout: default
-title: {{ site.name }}
+title: Página del proyecto Parseit
 ---
 Parseit
 =======
