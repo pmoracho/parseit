@@ -3,7 +3,7 @@ Parseit
 
 * [Página del proyecto](https://pmoracho.github.io/parseit)
 * [Proyecto en github](https://github.com/pmoracho/parseit)
-* [Descarga de ejecutable para windows](https://github.com/pmoracho/parseit/raw/master/dist/parseit-20161102.zip)
+* [Descarga de ejecutable para windows](https://github.com/pmoracho/parseit/raw/master/dist/parseit-20170105.zip)
 
 
 `Parseit` es una herramienta de linea de comandos para "interpretar" archivos
@@ -488,6 +488,9 @@ siguientes tareas:
   edición del archivo de formatos
 
 # Changelog:
+
+#### Version 1.4.1 - 2017-01-05
+* El tipo "amounts" permite procesar montos al estilo "0000-45.34"
 
 #### Version 1.4 - 2016-11-02
 * Corrección de bug, estaba filtrando un registro del total
