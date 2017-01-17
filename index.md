@@ -98,6 +98,7 @@ archivo, por ejemplo algo así:
 ```
 
 De esta forma tenemos:
+
 * Un archivo de texto con información en campos de longitud fija, por ejemplo:
   `sifere.dat`
 * Una definición JSON del formato, en un archivo de nombre `parseit.fmt` (puede
@@ -119,6 +120,7 @@ parseit sifere.dat` obtendremos en la línea de comandos una salida como está:
 ```
 
 Que hizo `parseit`?
+
 * Identificó y relacionó automáticamente al archivo de entrada con el formato
   definido anteriormente
 * Extrajo los campos del archivo original y los separo y formateo
@@ -494,7 +496,7 @@ siguientes tareas:
 # Changelog:
 
 #### Version 1.4.1 - 2017-01-05
-* El tipo "amounts" permite procesar montos al estilo "0000-45.34"
+* El tipo "amount" permite procesar montos al estilo "0000-45.34"
 
 #### Version 1.4 - 2016-11-02
 * Corrección de bug, estaba filtrando un registro del total
