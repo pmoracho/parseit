@@ -7,7 +7,7 @@ Parseit
 
 * [Página del proyecto](https://pmoracho.github.io/parseit)
 * [Proyecto en github](https://github.com/pmoracho/parseit)
-* [Descarga de ejecutable para windows](https://github.com/pmoracho/parseit/raw/master/dist/parseit-20170105.zip)
+* [Descarga de ejecutable para windows](https://github.com/pmoracho/parseit/raw/master/dist/parseit-20161102.zip)
 
 
 `Parseit` es una herramienta de linea de comandos para "interpretar" archivos
@@ -25,7 +25,7 @@ de una aplicación, la del Sistema federal de información más conocido como
 percepciones. El archivo de importación (texto, con campos de longitud fija y
 caracteres de fin de linea) tiene un formato ya definido como el siguiente:
 
-```
+``` terminal
 90130-00000000-901/01/200612341234567891234560FA0000000000010000123500000125,20
 90130-00000000-901/01/200612341234567891234560FA0000000000010000123500000125,20
 90130-00000000-901/01/200612341234567891234560FA0000000000010000123500000125,20
@@ -37,7 +37,7 @@ poder interpretar este archivo de una forma más conveniente, y usando la
 documentación que oportunamente publica el Afip, podemos definir dicho formato
 en una archivo JSON, por ejemplo de la siguiente forma:
 
-```
+``` json
 		"sifere-retenciones": {
 			"category": "Afip.Sifere",
 			"delimiter": "",
@@ -61,7 +61,7 @@ tipo de datos y particularmente algunos de los campos son "tablas", dónde el
 dato en sí hace referencia a una tabla de valores ya definida también en el
 archivo, por ejemplo algo así:
 
-```
+``` json
 	"sifere-jurisdicciones": {
 		"901": "Capital Federal",
 		"902": "Buenos Aires",
@@ -95,6 +95,7 @@ archivo, por ejemplo algo así:
 		"C": "Nota de Crédito",
 		"O": "Otro"
 	},
+
 ```
 
 De esta forma tenemos:
@@ -108,7 +109,7 @@ De esta forma tenemos:
 Con esta configuración al invocar `parseit sifere.dat` o eventualmente `python
 parseit sifere.dat` obtendremos en la línea de comandos una salida como está:
 
-```
+``` terminal
 +----------+--------------------------+--------------------------------+-------------------------+----------------------+------------------------+-----------------------+-------------------------+----------------------------------+--------------------+
 |   # Reg. | Código de Jurisdicción   | CUIT del Agente de Retención   | Fecha de la Retención   |   Número de Sucursal |   Número de constancia | Tipo de Comprobante   | Letra del Comprobante   |   Número de Comprobante Original |   Importe Retenido |
 |----------+--------------------------+--------------------------------+-------------------------+----------------------+------------------------+-----------------------+-------------------------+----------------------------------+--------------------|
@@ -179,8 +180,7 @@ idealmente que esté apuntada al path.
 
 ## Invocación sin parámetros o con `--help
 
-```
-
+``` terminal
 uso: parseit [-h] [-v] [-f "path o archivo"] [-u "formato"] [-t] [-s] [-i]
              [-o "archivo"] [-x] [-e "formato"] [-c "columnas"] [-r "filas"]
              [-n] [-z] [-a] [-l "archivo css"]
@@ -232,7 +232,7 @@ Ejemplos de uso:
 
 Filtra los registros 4 al 9 y el 12, y muestra las columnas 1 a 10 y la 13 
 
-```
+``` terminal
 +----------+---------------+---------------+---------------+-------------+--------------+--------------+------------------+--------------+-------------+-----------------------------------+
 |   # Reg. | Fecha Publ.   | Fecha Desde   | Fecha Hasta   |        CUIT | Tipo         | Marca Alta   | Marca Alícuota   |   Percepción |   Retención | Razón Social                      |
 |----------+---------------+---------------+---------------+-------------+--------------+--------------+------------------+--------------+-------------+-----------------------------------|
@@ -251,7 +251,7 @@ Filtra los registros 4 al 9 y el 12, y muestra las columnas 1 a 10 y la 13
 
 Muestra solo los registros 4 y 11 y los muestra en le modo horizontal.
 
-```
+``` terminal
 +---------------------+---------------------+
 |               Campo | Valor               |
 |---------------------+---------------------|
@@ -300,7 +300,7 @@ Muestra solo los registros 4 y 11 y los exporta en la forma tradicional CSV, por
 
 Generar una salida html de los registros 4 y 11
 
-```html
+``` html
 <!doctype html>
 <html lang="en">
 <head>
@@ -434,7 +434,7 @@ trata de `make.py`, la forma de ejecutarlo es la siguiente: `python
 tools\make.py <comando>` la ejecución si parámetros o mediante el parámetro
 `--help` arrojará una salida como lo que sigue:
 
-```
+``` terminal
 Automatización de tareas para el proyecto Paresit
 (c) 2016, Patricio Moracho <pmoracho@gmail.com>
 
@@ -496,7 +496,7 @@ siguientes tareas:
 # Changelog:
 
 #### Version 1.4.1 - 2017-01-05
-* El tipo "amount" permite procesar montos al estilo "0000-45.34"
+* El tipo "amounts" permite procesar montos al estilo "0000-45.34"
 
 #### Version 1.4 - 2016-11-02
 * Corrección de bug, estaba filtrando un registro del total
