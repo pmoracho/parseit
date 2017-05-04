@@ -7,7 +7,7 @@ Parseit
 
 * [Página del proyecto](https://pmoracho.github.io/parseit)
 * [Proyecto en github](https://github.com/pmoracho/parseit)
-* [Descarga de ejecutable para windows](https://github.com/pmoracho/parseit/raw/master/dist/parseit-20161102.zip)
+* [Descarga última versión para windows](https://github.com/pmoracho/parseit/raw/master/dist/parseit-20170504.zip)
 
 
 `Parseit` es una herramienta de linea de comandos para "interpretar" archivos
