@@ -22,8 +22,8 @@ __author__		= "Patricio Moracho <pmoracho@gmail.com>"
 __appname__		= "parseit"
 __appdesc__		= "Parseador de archivos"
 __license__		= 'GPL v3'
-__copyright__	= "2016, %s" % (__author__)
-__version__		= "1.3"
+__copyright__	= "2016, 2017 %s" % (__author__)
+__version__		= "1.4.2"
 __date__		= "2016/10/17"
 
 """
@@ -49,7 +49,8 @@ try:
 			'optional arguments': 'argumentos opcionales',
 			'show this help message and exit': 'mostrar esta ayuda y salir',
 			'positional arguments': 'argumentos posicionales',
-			'the following arguments are required: %s': 'los siguientes argumentos son requeridos: %s'
+			'the following arguments are required: %s': 'los siguientes argumentos son requeridos: %s',
+			'show program''s version number and exit': 'Mostrar la versión del programa y salir'
 		}
 
 		if s in current_dict:
@@ -180,12 +181,28 @@ if __name__ == "__main__":
 		sys.exit(-1)
 
 	if args.showformat:
-		parser.showformats(args.useformat)
+		if args.useformat:
+			parser.showformats(args.useformat)
+			sys.exit(0)
+
+		if args.inputfile:
+			parser.set_file_to_parse(args.inputfile)
+			posibles = []
+			try:
+				posibles = parser.get_posible_formats()
+			except Exception as e:
+				pass
+
+			if len(posibles) == 1:
+				formato = posibles[0]
+				parser.showformats(formato)
+			else:
+				parser.showformats()
+
 		sys.exit(0)
 
 	if args.inputfile:
 		parser.set_file_to_parse(args.inputfile)
-
 		try:
 			posibles = parser.get_posible_formats()
 		except Exception as e:

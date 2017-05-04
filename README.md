@@ -491,6 +491,9 @@ siguientes tareas:
 
 # Changelog:
 
+#### Version 1.4.2 - 2017-05-04
+* Se permite el `--shoformats` cuando se indica un archivo de input
+
 #### Version 1.4.1 - 2017-01-05
 * El tipo "amounts" permite procesar montos al estilo "0000-45.34"
 
