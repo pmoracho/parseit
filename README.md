@@ -53,7 +53,7 @@ en una archivo JSON, por ejemplo de la siguiente forma:
 ``` 
 
 Nótese que además de definir la longitud de cada campo y el orden, definimos el
-tipo de datos y particularmente algunos de los campos son "tablas", dónde el
+tipo de dato y particularmente algunos de los campos son "tablas", dónde el
 dato en sí hace referencia a una tabla de valores ya definida también en el
 archivo, por ejemplo algo así:
 
@@ -103,7 +103,7 @@ De esta forma tenemos:
 * La herramienta `parseit` o `parseit.exe`
 
 Con esta configuración al invocar `parseit sifere.dat` o eventualmente `python
-parseit sifere.dat` obtendremos en la línea de comandos una salida como está:
+parseit.py sifere.dat` obtendremos en la línea de comandos una salida como está:
 
 ``` terminal
 +----------+--------------------------+--------------------------------+-------------------------+----------------------+------------------------+-----------------------+-------------------------+----------------------------------+--------------------+
@@ -245,7 +245,7 @@ Filtra los registros 4 al 9 y el 12, y muestra las columnas 1 a 10 y la 13
 
 ## `parseit sample/padron.txt -r 4,11 -z`
 
-Muestra solo los registros 4 y 11 y los muestra en le modo horizontal.
+Muestra solo los registros 4 y 11 y los muestra en el modo horizontal.
 
 ``` terminal
 +---------------------+---------------------+
@@ -365,7 +365,7 @@ Generar una salida html de los registros 4 y 11
 
 ## `parseit sample/padron.txt  -e html -o salida.html -x`
 
-Exportar a html directo al archivo `salida.html` y abrirlo automáticamente con el navegador asociado
+Exportar a html directo al archivo `salida.html` y lo abre automáticamente con el navegador asociado
 
 ![Captura de pantalla de un Chrome](https://github.com/pmoracho/parseit/raw/master/doc/images/export-html.png)
 

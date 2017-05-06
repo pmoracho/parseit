@@ -50,7 +50,9 @@ try:
 			'show this help message and exit': 'mostrar esta ayuda y salir',
 			'positional arguments': 'argumentos posicionales',
 			'the following arguments are required: %s': 'los siguientes argumentos son requeridos: %s',
-			'show program''s version number and exit': 'Mostrar la versión del programa y salir'
+			'show program''s version number and exit': 'Mostrar la versión del programa y salir',
+			'expected one argument': 'se espera un valor para el parámetro',
+			'expected at least one argument': 'se espera al menos un valor para el parámetro'
 		}
 
 		if s in current_dict:
@@ -139,6 +141,22 @@ def expand_filename(filename):
 
 	return filename
 
+
+def parsefile(parser, args):
+	parser.dontusetables	= args.dontusetables
+	parser.addrecordnumber	= args.addrecordnumber
+	parser.addtotals		= args.addtotals
+	parser.cssfile			= args.cssfile
+	parser.openfile			= args.openfile
+	parser.searchtext		= args.searchtext
+
+	if args.outputfile:
+		parser.outputfile	= expand_filename(args.outputfile)
+
+	parser.parseit_as(formato)
+	parser.export(args.exportformat, args.showcols, args.showrows, args.horizontalmode)
+
+
 ##################################################################################################################################################
 # Main program
 ##################################################################################################################################################
@@ -182,6 +200,7 @@ if __name__ == "__main__":
 
 	if args.showformat:
 		if args.useformat:
+			# Se muestra el formato solictado
 			parser.showformats(args.useformat)
 			sys.exit(0)
 
@@ -194,10 +213,16 @@ if __name__ == "__main__":
 				pass
 
 			if len(posibles) == 1:
+				# Se muestra el formato del archivo de entrada
 				formato = posibles[0]
 				parser.showformats(formato)
 			else:
+				# No se pudo identificar el formato se muestran todos
 				parser.showformats()
+		else:
+			# No se indico ni formato ni inputfile -> se muestran todos los
+			# formatos
+			parser.showformats()
 
 		sys.exit(0)
 
@@ -223,18 +248,7 @@ if __name__ == "__main__":
 		Parseo finalmente el archivo
 		"""
 		try:
-			parser.dontusetables	= args.dontusetables
-			parser.addrecordnumber	= args.addrecordnumber
-			parser.addtotals		= args.addtotals
-			parser.cssfile			= args.cssfile
-			parser.openfile			= args.openfile
-			parser.searchtext		= args.searchtext
-
-			if args.outputfile:
-				parser.outputfile	= expand_filename(args.outputfile)
-
-			parser.parseit_as(formato)
-			parser.export(args.exportformat, args.showcols, args.showrows, args.horizontalmode)
+			parsefile(parser, args)
 		except Exception as e:
 			showerror(e)
 			sys.exit(-1)

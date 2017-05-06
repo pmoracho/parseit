@@ -42,10 +42,12 @@ try:
 	def my_gettext(s):
 		"""my_gettext: Traducir algunas cadenas de argparse."""
 		current_dict = {'usage: ': '',
-						'optional arguments': 'argumentos opcionales',
+						'optional arguments': 'parámetros opcionales',
 						'show this help message and exit': 'mostrar esta ayuda y salir',
-						'positional arguments': 'argumentos posicionales',
-						'the following arguments are required: %s': 'los siguientes argumentos son requeridos: %s'}
+						'positional arguments': 'parámetros posicionales',
+						'the following arguments are required: %s': 'los siguientes parámetros son requeridos: %s',
+						'error: argument %s: expected one argument': 'error: parámetro %s: se esperaba un valor para el mismo'
+				  }
 
 		if s in current_dict:
 			return current_dict[s]
@@ -55,10 +57,10 @@ try:
 
 	import sys
 	import subprocess
-	import re
 	import argparse
-	from argparse import RawTextHelpFormatter
 	import textwrap
+	# import re
+	# from argparse import RawTextHelpFormatter
 
 except ImportError as err:
 	modulename = err.args[0].partition("'")[-1].rpartition("'")[0]
