@@ -142,7 +142,8 @@ def expand_filename(filename):
 	return filename
 
 
-def parsefile(parser, args):
+def parsefile(parser, args, formato):
+
 	parser.dontusetables	= args.dontusetables
 	parser.addrecordnumber	= args.addrecordnumber
 	parser.addtotals		= args.addtotals
@@ -248,7 +249,7 @@ if __name__ == "__main__":
 		Parseo finalmente el archivo
 		"""
 		try:
-			parsefile(parser, args)
+			parsefile(parser, args, formato)
 		except Exception as e:
 			showerror(e)
 			sys.exit(-1)
