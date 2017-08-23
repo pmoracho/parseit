@@ -7,7 +7,7 @@ Parseit
 
 * [Página del proyecto](https://pmoracho.github.io/parseit)
 * [Proyecto en github](https://github.com/pmoracho/parseit)
-* [Descarga última versión para windows](https://github.com/pmoracho/parseit/raw/master/dist/parseit-20170504.zip)
+* [Descarga de ejecutable para windows](https://github.com/pmoracho/parseit/raw/master/dist/parseit-20170823.zip)
 
 
 `Parseit` es una herramienta de linea de comandos para "interpretar" archivos
@@ -57,7 +57,7 @@ en una archivo JSON, por ejemplo de la siguiente forma:
 ``` 
 
 Nótese que además de definir la longitud de cada campo y el orden, definimos el
-tipo de datos y particularmente algunos de los campos son "tablas", dónde el
+tipo de dato y particularmente algunos de los campos son "tablas", dónde el
 dato en sí hace referencia a una tabla de valores ya definida también en el
 archivo, por ejemplo algo así:
 
@@ -107,7 +107,7 @@ De esta forma tenemos:
 * La herramienta `parseit` o `parseit.exe`
 
 Con esta configuración al invocar `parseit sifere.dat` o eventualmente `python
-parseit sifere.dat` obtendremos en la línea de comandos una salida como está:
+parseit.py sifere.dat` obtendremos en la línea de comandos una salida como está:
 
 ``` terminal
 +----------+--------------------------+--------------------------------+-------------------------+----------------------+------------------------+-----------------------+-------------------------+----------------------------------+--------------------+
@@ -123,7 +123,7 @@ parseit sifere.dat` obtendremos en la línea de comandos una salida como está:
 Que hizo `parseit`?
 
 * Identificó y relacionó automáticamente al archivo de entrada con el formato
-  definido anteriormente
+  definido anteriormente, esto lo hace determinando la longitud del registro
 * Extrajo los campos del archivo original y los separo y formateo
   convenientemente
 * Agregó un titulo a cada columna según lo definido en el archivo de
@@ -249,7 +249,7 @@ Filtra los registros 4 al 9 y el 12, y muestra las columnas 1 a 10 y la 13
 
 ## `parseit sample/padron.txt -r 4,11 -z`
 
-Muestra solo los registros 4 y 11 y los muestra en le modo horizontal.
+Muestra solo los registros 4 y 11 y los muestra en el modo horizontal.
 
 ``` terminal
 +---------------------+---------------------+
@@ -369,7 +369,7 @@ Generar una salida html de los registros 4 y 11
 
 ## `parseit sample/padron.txt  -e html -o salida.html -x`
 
-Exportar a html directo al archivo `salida.html` y abrirlo automáticamente con el navegador asociado
+Exportar a html directo al archivo `salida.html` y lo abre automáticamente con el navegador asociado
 
 ![Captura de pantalla de un Chrome](https://github.com/pmoracho/parseit/raw/master/doc/images/export-html.png)
 
@@ -494,6 +494,9 @@ siguientes tareas:
   edición del archivo de formatos
 
 # Changelog:
+
+#### Version 1.4.3 - 2017-08-23
+* Fix, mostraba un registro menos.
 
 #### Version 1.4.2 - 2017-05-04
 * Se permite el `--shoformats` cuando se indica un archivo de input
