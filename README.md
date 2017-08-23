@@ -3,7 +3,7 @@ Parseit
 
 * [Página del proyecto](https://pmoracho.github.io/parseit)
 * [Proyecto en github](https://github.com/pmoracho/parseit)
-* [Descarga de ejecutable para windows](https://github.com/pmoracho/parseit/raw/master/dist/parseit-20161102.zip)
+* [Descarga de ejecutable para windows](https://github.com/pmoracho/parseit/raw/master/dist/parseit-20170823.zip)
 
 
 `Parseit` es una herramienta de linea de comandos para "interpretar" archivos
@@ -119,7 +119,7 @@ parseit.py sifere.dat` obtendremos en la línea de comandos una salida como est�
 Que hizo `parseit`?
 
 * Identificó y relacionó automáticamente al archivo de entrada con el formato
-  definido anteriormente
+  definido anteriormente, esto lo hace determinando la longitud del registro
 * Extrajo los campos del archivo original y los separo y formateo
   convenientemente
 * Agregó un titulo a cada columna según lo definido en el archivo de
@@ -490,6 +490,9 @@ siguientes tareas:
   edición del archivo de formatos
 
 # Changelog:
+
+#### Version 1.4.3 - 2017-08-23
+* Fix, mostraba un registro menos.
 
 #### Version 1.4.2 - 2017-05-04
 * Se permite el `--shoformats` cuando se indica un archivo de input

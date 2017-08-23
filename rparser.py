@@ -380,7 +380,7 @@ class Parser(object):
 
 		data_filtered = []
 		for r in data:
-			if r[0] in filas_a_mostrar:
+			if r[0] in filas_a_mostrar or filas_a_mostrar is None:
 				if texto_filtro:
 					if [k for k in r if texto_filtro.lower() in str(k).lower()]:
 						data_filtered.append([r[c-1] for c in campos_a_mostrar])
@@ -409,7 +409,7 @@ class Parser(object):
 		if showrows:
 			filas_a_mostrar = self._str_to_list(showrows, len(self._records))
 		else:
-			filas_a_mostrar = [i for i in range(1, len(self._records)+1)]
+			filas_a_mostrar = [e for e in range(1, len(self._records) + 1)]
 
 		if showcols:
 			campos_a_mostrar = self._str_to_list(showcols, len(self._parseformat.get("fields")))
