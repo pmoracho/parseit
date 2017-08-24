@@ -118,8 +118,7 @@ class Parser(object):
 				with open(f, "r", encoding='utf-8') as json_file:
 					data = json.load(json_file, object_pairs_hook=OrderedDict)
 					self._formats.update(data.get("formats"))
-					self._tablas.update(data.get("tables"))
-
+					self._tablas.update(data.get("tables", {}))
 			except ValueError as e:
 				if not ignorefmterror:
 					raise Exception('{0} al intentar cargar el archivo: {1}'.format(str(e), str(f)))
