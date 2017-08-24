@@ -326,7 +326,7 @@ class Parser(object):
 
 			self._records.append(campos)
 
-	def showformats(self, nombre_formato):
+	def showformats(self, nombre_formato=None):
 		"""Imprime en la salida extandar la documentación de uno o todos los formatos
 
 		Args:
@@ -389,7 +389,7 @@ class Parser(object):
 
 		return data_filtered
 
-	def export(self, export_format, showcols=None, showrows=None, horizontalmode=False):
+	def export(self, export_format, showcols=None, showrows=None, horizontalmode=False, noheader=False):
 		"""
 		Exportación del archivo interpretado según	el format especificado
 
@@ -437,7 +437,7 @@ class Parser(object):
 
 			registros.append(totales)
 
-		if export_format == "csv":
+		if export_format in ("csv", "psv"):
 			numalign = None
 			stralign = None
 		else:
@@ -464,7 +464,7 @@ class Parser(object):
 
 		tablestr = tabulate(
 						tabular_data=registros,
-						headers=header_row,
+						headers=[] if noheader else header_row,
 						floatfmt="8.2f",
 						tablefmt=export_format,
 						numalign=numalign,

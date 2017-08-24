@@ -108,6 +108,7 @@ def init_argparse():
 	cmdparser.add_argument('-a', '--addtotals', 				action="store_true", dest="addtotals", help="Agregar una última fila con los totales de los campos númericos")
 	cmdparser.add_argument('-l', '--css-file', 					action="store", dest="cssfile", help="Archivo de estilos (.Css) para la salida Html", metavar="\"archivo css\"")
 	cmdparser.add_argument('-b', '--search-text', 	type=str, 	action="store", dest="searchtext", help="Búsqueda y filtrado de texto", metavar="\"Texto a buscar\"")
+	cmdparser.add_argument('-d', '--no-header', 				action="store_true", dest="noheader", help="No mostrar el encabezado de columnas")
 
 	return cmdparser
 
@@ -155,7 +156,7 @@ def parsefile(parser, args, formato):
 		parser.outputfile	= expand_filename(args.outputfile)
 
 	parser.parseit_as(formato)
-	parser.export(args.exportformat, args.showcols, args.showrows, args.horizontalmode)
+	parser.export(args.exportformat, args.showcols, args.showrows, args.horizontalmode, args.noheader)
 
 
 ##################################################################################################################################################

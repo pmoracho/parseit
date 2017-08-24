@@ -321,9 +321,10 @@ _table_formats = {"simple":
 				  "psv":
 				  TableFormat(lineabove=None, linebelowheader=None,
 							  linebetweenrows=None, linebelow=None,
-							  headerrow=DataRow("", "|", ""),
-							  datarow=DataRow("", "|", ""),
+							  headerrow=DataRow("\"", "\"|\"", "\""),
+							  datarow=DataRow("\"", "\"|\"", "\""),
 							  padding=0, with_header_hide=None),
+
 				  "csv":
 				  TableFormat(lineabove=None, linebelowheader=None,
 							  linebetweenrows=None, linebelow=None,
