@@ -318,11 +318,17 @@ _table_formats = {"simple":
 							  headerrow=DataRow("", "\t", ""),
 							  datarow=DataRow("", "\t", ""),
 							  padding=0, with_header_hide=None),
+				  "psv":
+				  TableFormat(lineabove=None, linebelowheader=None,
+							  linebetweenrows=None, linebelow=None,
+							  headerrow=DataRow("", "|", ""),
+							  datarow=DataRow("", "|", ""),
+							  padding=0, with_header_hide=None),
 				  "csv":
 				  TableFormat(lineabove=None, linebelowheader=None,
 							  linebetweenrows=None, linebelow=None,
-							  headerrow=DataRow("\"", "\";\"", "\""),
-							  datarow=DataRow("\"", "\";\"", "\""),
+							  headerrow=DataRow("\"", "\",\"", "\""),
+							  datarow=DataRow("\"", "\",\"", "\""),
 							  padding=0, with_header_hide=None),
 				  "textile":
 				  TableFormat(lineabove=None, linebelowheader=None,
@@ -805,7 +811,7 @@ def _normalize_tabular_data(tabular_data, headers, showindex="default"):
 
 def tabulate(tabular_data, headers=(), tablefmt="simple",
 			 floatfmt="g", numalign="decimal", stralign="left",
-			 missingval="", showindex="default", 
+			 missingval="", showindex="default",
 			 override_cols_align=None, override_cols_fmt=None):
 	"""Format a fixed width table for pretty printing.
 
@@ -1094,7 +1100,7 @@ def tabulate(tabular_data, headers=(), tablefmt="simple",
 		# align headers and add headers
 		t_cols = cols or [['']] * len(headers)
 		t_aligns = aligns or [stralign] * len(headers)
-		
+
 		minwidths = [max(minw, width_fn(c[0])) for minw, c in zip(minwidths, t_cols)]
 		headers = [_align_header(h, a, minw, width_fn(h))
 				   for h, a, minw in zip(headers, t_aligns, minwidths)]
